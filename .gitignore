@@ -20,3 +20,16 @@
 
 # virtual machine crash logs, see http://www.java.com/en/download/help/error_hotspot.xml
 hs_err_pid*
+
+# eclipse项目配置文件
+.classpath
+.settings
+.project
+/target/
+
+# idea项目配置文件
+.idea
+*.iml
+
+# prod配置不提交
+*application-prod.yml
