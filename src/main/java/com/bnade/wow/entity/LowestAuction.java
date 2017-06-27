@@ -1,16 +1,16 @@
 package com.bnade.wow.entity;
 
-import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
-import javax.validation.constraints.NotNull;
 
 /**
- * 拍卖记录信息
- * Created by liufeng0103@163.com on 2017/6/12.
+ * 最低一口价拍卖数据
+ * Created by liufeng0103@163.com on 2017/6/11.
  */
-@Entity
-public class Auction {
+public class LowestAuction {
     @Id
+    @GeneratedValue
+    private Long id;
     private Integer auc;
     private Integer itemId;
     private String owner;
@@ -18,15 +18,22 @@ public class Auction {
     private Long bid;
     private Long buyout;
     private Integer quantity;
+    private Integer totalQuantity;
     private String timeLeft;
     private Integer petSpeciesId;
     private Integer petLevel;
     private Integer petBreedId;
     private Integer context;
     private String bonusList;
-
-    @NotNull
     private Integer realmId;
+
+    public Long getId() {
+        return id;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
+    }
 
     public Integer getAuc() {
         return auc;
@@ -82,6 +89,14 @@ public class Auction {
 
     public void setQuantity(Integer quantity) {
         this.quantity = quantity;
+    }
+
+    public Integer getTotalQuantity() {
+        return totalQuantity;
+    }
+
+    public void setTotalQuantity(Integer totalQuantity) {
+        this.totalQuantity = totalQuantity;
     }
 
     public String getTimeLeft() {
@@ -142,14 +157,16 @@ public class Auction {
 
     @Override
     public String toString() {
-        return "Auction{" +
-                "auc=" + auc +
+        return "LowestAuction{" +
+                "id=" + id +
+                ", auc=" + auc +
                 ", itemId=" + itemId +
                 ", owner='" + owner + '\'' +
                 ", ownerRealm='" + ownerRealm + '\'' +
                 ", bid=" + bid +
                 ", buyout=" + buyout +
                 ", quantity=" + quantity +
+                ", totalQuantity=" + totalQuantity +
                 ", timeLeft='" + timeLeft + '\'' +
                 ", petSpeciesId=" + petSpeciesId +
                 ", petLevel=" + petLevel +

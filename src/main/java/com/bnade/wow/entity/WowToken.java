@@ -4,6 +4,7 @@ import javax.persistence.Entity;
 import javax.persistence.Id;
 
 /**
+ * 时光徽章
  * Created by liufeng0103@163.com on 2017/6/6.
  */
 @Entity(name = "t_wowtoken")
