@@ -24,6 +24,7 @@ public class ItemController {
     /**
      * 通过参数search的值查询所有包含该值的物品
      * API GET /items?search=xxx
+     *
      * @param name 物品名
      * @return 物品列表
      */
@@ -31,4 +32,18 @@ public class ItemController {
     public List<Item> search(@RequestParam("search") String name) {
         return itemService.search(name);
     }
+
+    /**
+     * 查询所有包含查询值的物品名
+     * @param name 查询名
+     * @param limit 返回的条数,默认返回10条
+     * @return 物品名列表
+     */
+    @GetMapping("/names")
+    public List<String> searchNames(
+            @RequestParam("search") String name,
+            @RequestParam(value = "limit", defaultValue = "10") Integer limit) {
+        return itemService.searchNamesByNameContaining(name, limit);
+    }
+
 }

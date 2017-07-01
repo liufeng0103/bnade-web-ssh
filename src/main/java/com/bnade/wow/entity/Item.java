@@ -16,7 +16,7 @@ public class Item {
     private Integer itemClass;
     private Integer itemSubClass;
     private Integer inventoryType;
-    private Integer itemLevel;
+    private Integer level;
     private Integer hot;
     @Transient // 表示非表列
     private List<String> bonusList;
@@ -69,12 +69,12 @@ public class Item {
         this.inventoryType = inventoryType;
     }
 
-    public Integer getItemLevel() {
-        return itemLevel;
+    public Integer getLevel() {
+        return level;
     }
 
-    public void setItemLevel(Integer itemLevel) {
-        this.itemLevel = itemLevel;
+    public void setLevel(Integer level) {
+        this.level = level;
     }
 
     public Integer getHot() {
@@ -102,7 +102,7 @@ public class Item {
                 ", itemClass=" + itemClass +
                 ", itemSubClass=" + itemSubClass +
                 ", inventoryType=" + inventoryType +
-                ", itemLevel=" + itemLevel +
+                ", level=" + level +
                 ", hot=" + hot +
                 ", bonusList=" + bonusList +
                 '}';

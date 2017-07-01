@@ -29,4 +29,9 @@ public class ItemRepositoryTest {
     public void findOneTest() throws Exception {
         System.out.println(itemRepository.findOne(124105));
     }
+
+    @Test
+    public void searchNamesByNameContaining() throws Exception {
+        System.out.println(itemRepository.searchNamesByNameContaining("玫瑰", 10));
+    }
 }

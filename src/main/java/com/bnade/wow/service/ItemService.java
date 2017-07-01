@@ -1,23 +1,17 @@
 package com.bnade.wow.service;
 
-import com.bnade.wow.entity.Auction;
 import com.bnade.wow.entity.Item;
 import com.bnade.wow.entity.ItemBonus;
-import com.bnade.wow.repository.AuctionRepository;
 import com.bnade.wow.repository.ItemBonusRepository;
 import com.bnade.wow.repository.ItemRepository;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
 
-import javax.persistence.criteria.CriteriaBuilder;
-import javax.persistence.criteria.CriteriaQuery;
-import javax.persistence.criteria.Predicate;
-import javax.persistence.criteria.Root;
 import java.util.ArrayList;
 import java.util.List;
 
 /**
+ * 物品service
  * Created by liufeng0103@163.com on 2017/6/12.
  */
 @Service
@@ -41,4 +35,13 @@ public class ItemService {
         return items;
     }
 
+    /**
+     * 查询所有包含查询值的物品名
+     * @param name 查询名
+     * @param limit 返回的条数
+     * @return 物品名列表
+     */
+    public List<String> searchNamesByNameContaining(String name, Integer limit) {
+        return itemRepository.searchNamesByNameContaining(name, limit);
+    }
 }
