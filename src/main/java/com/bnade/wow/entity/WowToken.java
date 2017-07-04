@@ -7,7 +7,7 @@ import javax.persistence.Id;
  * 时光徽章
  * Created by liufeng0103@163.com on 2017/6/6.
  */
-@Entity(name = "t_wowtoken")
+@Entity
 public class WowToken {
     @Id
     private Long updated;
@@ -32,7 +32,7 @@ public class WowToken {
 
     @Override
     public String toString() {
-        return "WowToken{" +
+        return "Wowtoken{" +
                 "updated=" + updated +
                 ", buy=" + buy +
                 '}';
