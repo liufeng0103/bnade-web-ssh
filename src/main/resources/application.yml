@@ -2,7 +2,22 @@
 spring:
   profiles:
     active: dev
+  thymeleaf:
+    # 模板配置
+    # 这个开发配置为false，避免改了模板还要重启服务器
+    # Allow Thymeleaf templates to be reloaded at dev time
+    cache: false
+    # 这个是配置模板路径的，默认就是templates，可不用配置
+    prefix: classpath:/templates/
+    #suffix: .html
+    # 这个可以不配置，检查模板位置
+    check-template-location: true
+    encoding: UTF-8
+    content-type: text/html
+    # 模板的模式
+    mode: HTML5
+    debug: true
 
 server:
-    port: 8081
+    port: 8080
     context-path: /
