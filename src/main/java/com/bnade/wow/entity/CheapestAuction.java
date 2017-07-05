@@ -1,17 +1,24 @@
 package com.bnade.wow.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+
+import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
+import javax.validation.constraints.NotNull;
 
 /**
  * 最低一口价拍卖数据
  * Created by liufeng0103@163.com on 2017/6/11.
  */
-public class LowestAuction {
+@Entity
+@JsonIgnoreProperties(value = {"id", "auc", "ownerRealm", "bid", "context"}) // 不需要转json字段
+public class CheapestAuction {
     @Id
     @GeneratedValue
     private Long id;
     private Integer auc;
+    @NotNull
     private Integer itemId;
     private String owner;
     private String ownerRealm;
@@ -157,7 +164,7 @@ public class LowestAuction {
 
     @Override
     public String toString() {
-        return "LowestAuction{" +
+        return "CheapestAuction{" +
                 "id=" + id +
                 ", auc=" + auc +
                 ", itemId=" + itemId +
