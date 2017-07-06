@@ -1,7 +1,9 @@
 package com.bnade.wow.controller;
 
 import com.bnade.wow.entity.Auction;
+import com.bnade.wow.entity.Realm;
 import com.bnade.wow.service.AuctionService;
+import com.bnade.wow.service.RealmService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
@@ -14,6 +16,8 @@ import java.util.List;
 @RequestMapping("/realms")
 public class RealmController {
 
+    @Autowired
+    private RealmService realmService;
     @Autowired
     private AuctionService auctionService;
     @Autowired
@@ -30,5 +34,10 @@ public class RealmController {
                                      Auction auction) {
         auction.setRealmId(realmId);
         return auctionController.findAll(auction);
+    }
+
+    @GetMapping
+    public List<Realm> findAll() {
+        return realmService.findAll();
     }
 }
