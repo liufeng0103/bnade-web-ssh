@@ -24,4 +24,13 @@ public class RealmService {
     public List<Realm> findAll() {
         return realmRepository.findAll();
     }
+
+    /**
+     * 通过服务器id获取服务器信息
+     * @param id 服务器ID
+     * @return 服务器信息
+     */
+    public Realm findById(Integer id) {
+        return realmRepository.findOne(id);
+    }
 }

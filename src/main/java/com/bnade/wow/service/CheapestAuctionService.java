@@ -1,6 +1,8 @@
 package com.bnade.wow.service;
 
+import com.bnade.wow.dto.CheapestAuctionDTO;
 import com.bnade.wow.entity.CheapestAuction;
+import com.bnade.wow.entity.Realm;
 import com.bnade.wow.repository.CheapestAuctionRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -18,7 +20,8 @@ public class CheapestAuctionService {
 
     @Autowired
     private CheapestAuctionRepository cheapestAuctionRepository;
-
+    @Autowired
+    private RealmService realmService;
     /**
      * 多条件查询
      * @param auction 查询条件
@@ -46,5 +49,29 @@ public class CheapestAuctionService {
             criteriaQuery.where(list.toArray(new Predicate[list.size()]));
             return null;
         });
+    }
+
+    /**
+     * 查询所有满足条件的最低一口价拍卖
+     * 同时获取服务器的人气
+     * @param auction 查询条件
+     * @return List
+     */
+    public List<CheapestAuctionDTO> findAllCheapest(CheapestAuction auction) {
+        List<CheapestAuction> aucs = findAll(auction);
+        List<CheapestAuctionDTO> auctionDTOs = new ArrayList<>(aucs.size());
+        for (CheapestAuction auc : aucs) {
+            Realm realm = realmService.findById(auc.getRealmId());
+            CheapestAuctionDTO auctionDTO = new CheapestAuctionDTO();
+            auctionDTO.setBuyout(auc.getBuyout());
+            auctionDTO.setOwner(auc.getOwner());
+            auctionDTO.setTimeLeft(auc.getTimeLeft());
+            auctionDTO.setQuantity(auc.getQuantity());
+            auctionDTO.setTotalQuantity(auc.getTotalQuantity());
+            auctionDTO.setRealmId(auc.getRealmId());
+            auctionDTO.setOwnerQuantity(realm.getOwnerQuantity());
+            auctionDTOs.add(auctionDTO);
+        }
+        return auctionDTOs;
     }
 }

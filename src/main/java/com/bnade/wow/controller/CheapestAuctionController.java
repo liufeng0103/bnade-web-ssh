@@ -1,5 +1,6 @@
 package com.bnade.wow.controller;
 
+import com.bnade.wow.dto.CheapestAuctionDTO;
 import com.bnade.wow.entity.CheapestAuction;
 import com.bnade.wow.service.CheapestAuctionService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -27,12 +28,12 @@ public class CheapestAuctionController {
      * @return 所有满足条件的拍卖数据
      */
     @GetMapping
-    public List<CheapestAuction> findAll(@Valid CheapestAuction auction) {
+    public List<CheapestAuctionDTO> findAll(@Valid CheapestAuction auction) {
         // BonusList默认为空
         if (null == auction.getBonusList()) {
             auction.setBonusList("");
         }
-        return cheapestAuctionService.findAll(auction);
+        return cheapestAuctionService.findAllCheapest(auction);
     }
 
 }
