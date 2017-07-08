@@ -9,7 +9,7 @@ public class BnadeException extends RuntimeException {
     private Integer code;
 
     public BnadeException(ResultEnum resultEnum) {
-        super(resultEnum.getMsg());
+        super(resultEnum.getMessage());
         this.code = resultEnum.getCode();
     }
 

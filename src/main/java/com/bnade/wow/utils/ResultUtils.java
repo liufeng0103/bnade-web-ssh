@@ -1,6 +1,7 @@
 package com.bnade.wow.utils;
 
 import com.bnade.wow.dto.Result;
+import com.bnade.wow.enums.ResultEnum;
 
 /**
  * 生成Result的工具类
@@ -8,22 +9,19 @@ import com.bnade.wow.dto.Result;
  */
 public class ResultUtils {
 
-    public static Result success(Object object) {
+    public static Result success() {
         Result result = new Result();
-        result.setCode(0);
-        result.setMsg("成功");
-        result.setData(object);
+        result.setCode(ResultEnum.SUCCESS.getCode());
+        result.setMessage(ResultEnum.SUCCESS.getMessage());
+        result.setUrl("");
         return result;
     }
 
-    public static Result success() {
-        return success(null);
-    }
-
-    public static Result error(Integer code, String msg) {
+    public static Result error(Integer code, String msg, String url) {
         Result result = new Result();
         result.setCode(code);
-        result.setMsg(msg);
+        result.setMessage(msg);
+        result.setUrl(url);
         return result;
     }
 }
