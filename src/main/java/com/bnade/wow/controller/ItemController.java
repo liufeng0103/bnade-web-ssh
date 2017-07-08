@@ -22,15 +22,13 @@ public class ItemController {
     private ItemService itemService;
 
     /**
-     * 通过参数search的值查询所有包含该值的物品
-     * API GET /items?search=xxx
-     *
+     * 通过物品名查询物品
      * @param name 物品名
      * @return 物品列表
      */
     @GetMapping
-    public List<Item> search(@RequestParam("search") String name) {
-        return itemService.search(name);
+    public List<Item> findByName(@RequestParam("name") String name) {
+        return itemService.findByName(name);
     }
 
     /**

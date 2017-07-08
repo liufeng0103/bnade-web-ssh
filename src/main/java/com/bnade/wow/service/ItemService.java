@@ -23,16 +23,7 @@ public class ItemService {
     private ItemBonusRepository itemBonusRepository;
 
     public List<Item> search(String name) {
-        List<Item> items = itemRepository.searchByName(name);
-        for (Item item : items) {
-            List<String> bonusList = new ArrayList<>();
-            item.setBonusList(bonusList);
-            List<ItemBonus> itemBonuses = itemBonusRepository.findByItemId(item.getId());
-            for (ItemBonus itemBonus : itemBonuses) {
-                bonusList.add(itemBonus.getBonusList());
-            }
-        }
-        return items;
+        return null;
     }
 
     /**
@@ -43,5 +34,19 @@ public class ItemService {
      */
     public List<String> searchNamesByNameContaining(String name, Integer limit) {
         return itemRepository.searchNamesByNameContaining(name, limit);
+    }
+
+    /**
+     * 通过物品名查询物品
+     * @param name 物品名
+     * @return 物品列表
+     */
+    public List<Item> findByName(String name) {
+        List<Item> items = itemRepository.findByName(name);
+        for (Item item : items) {
+            // TODO 不是所有物品都有bonus list，这里可以优化
+            item.setBonusList(itemBonusRepository.findBonusListByItemId(item.getId()));
+        }
+        return items;
     }
 }

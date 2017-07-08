@@ -31,4 +31,11 @@ public interface ItemRepository extends JpaRepository<Item, Integer> {
     @Query(value = "SELECT name FROM item WHERE MATCH (name) AGAINST (?1 IN BOOLEAN MODE) ORDER BY hot DESC LIMIT 0,?2", nativeQuery = true)
     List<String> searchNamesByNameContaining(String name, Integer limit);
 
+    /**
+     * 通过物品名查询物品
+     * @param name 物品名
+     * @return 物品列表
+     */
+    List<Item> findByName(String name);
+
 }

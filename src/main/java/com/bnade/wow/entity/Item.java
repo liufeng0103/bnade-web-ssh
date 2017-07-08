@@ -1,5 +1,7 @@
 package com.bnade.wow.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+
 import javax.persistence.*;
 import java.util.List;
 
@@ -8,6 +10,7 @@ import java.util.List;
  * Created by liufeng0103@163.com on 2017/6/27.
  */
 @Entity
+@JsonIgnoreProperties(value = {"icon", "itemClass", "itemSubClass", "inventoryType", "hot"})
 public class Item {
     @Id
     private Integer id;
