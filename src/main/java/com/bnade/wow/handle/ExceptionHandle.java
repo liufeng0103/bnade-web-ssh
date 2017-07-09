@@ -9,6 +9,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.ConversionNotSupportedException;
 import org.springframework.http.HttpStatus;
+import org.springframework.web.bind.MissingServletRequestParameterException;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ResponseBody;
@@ -33,6 +34,16 @@ public class ExceptionHandle {
         logger.debug("找不到url资源 {}", url);
         ResultEnum notFound = ResultEnum.NOT_FOUND;
         return ResultUtils.error(notFound.getCode(), notFound.getMessage(), url);
+    }
+
+    @ExceptionHandler(value = {IllegalArgumentException.class, MissingServletRequestParameterException.class})
+    @ResponseStatus(value = HttpStatus.BAD_REQUEST)
+    @ResponseBody
+    public Result handle400Error(HttpServletRequest req) {
+        String url = req.getRequestURL() + "?" + req.getQueryString();
+        logger.debug("不合法的url请求 {}", url);
+        ResultEnum badRequest = ResultEnum.BAD_REQUEST;
+        return ResultUtils.error(badRequest.getCode(), badRequest.getMessage(), url);
     }
 
     @ExceptionHandler(value = Exception.class)

@@ -33,15 +33,15 @@ public class ItemController {
 
     /**
      * 查询所有包含查询值的物品名
-     * @param name 查询名
+     * @param search 查询名
      * @param limit 返回的条数,默认返回10条
      * @return 物品名列表
      */
     @GetMapping("/names")
     public List<String> searchNames(
-            @RequestParam("search") String name,
+            @RequestParam(value = "search") String search,
             @RequestParam(value = "limit", defaultValue = "10") Integer limit) {
-        return itemService.searchNamesByNameContaining(name, limit);
+        return itemService.searchNamesByNameContaining(search, limit);
     }
 
 }
