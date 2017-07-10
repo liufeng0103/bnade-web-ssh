@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.ResponseStatus;
+import org.springframework.web.method.annotation.MethodArgumentTypeMismatchException;
 
 import javax.servlet.http.HttpServletRequest;
 
@@ -36,12 +37,12 @@ public class ExceptionHandle {
         return ResultUtils.error(notFound.getCode(), notFound.getMessage(), url);
     }
 
-    @ExceptionHandler(value = {IllegalArgumentException.class, MissingServletRequestParameterException.class})
+    @ExceptionHandler(value = {IllegalArgumentException.class, MissingServletRequestParameterException.class, MethodArgumentTypeMismatchException.class})
     @ResponseStatus(value = HttpStatus.BAD_REQUEST)
     @ResponseBody
-    public Result handle400Error(HttpServletRequest req) {
+    public Result handle400Error(HttpServletRequest req, Exception e) {
         String url = req.getRequestURL() + "?" + req.getQueryString();
-        logger.debug("不合法的url请求 {}", url);
+        logger.debug("不合法的url请求: {}", url);
         ResultEnum badRequest = ResultEnum.BAD_REQUEST;
         return ResultUtils.error(badRequest.getCode(), badRequest.getMessage(), url);
     }
@@ -51,7 +52,7 @@ public class ExceptionHandle {
     @ResponseBody
     public Result handleError(HttpServletRequest req, Exception e) {
         String url = req.getRequestURL() + "?" + req.getQueryString();
-        logger.error("url: {}, 错误: {}", url, e);
+        logger.error("url: {}", url, e);
         ResultEnum serverError = ResultEnum.INTERNAL_SERVER_ERROR;
         return ResultUtils.error(serverError.getCode(), serverError.getMessage(), req.getRequestURL().toString());
     }
