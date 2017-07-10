@@ -15,12 +15,18 @@ import static org.junit.Assert.*;
 @SpringBootTest
 public class ItemServiceTest {
 
+
     @Autowired
     private ItemService itemService;
 
     @Test
     public void findByName() throws Exception {
         System.out.println(itemService.findByName("星光玫瑰"));
+    }
+
+    @Test
+    public void findById() throws Exception {
+        System.out.println(itemService.findById(124105));
     }
 
 }

@@ -6,8 +6,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit4.SpringRunner;
 
-import static org.junit.Assert.*;
-
 /**
  * Created by liufeng0103@163.com on 2017/7/7.
  */
@@ -20,7 +18,7 @@ public class ItemBonusRepositoryTest {
 
     @Test
     public void findBonusListByItemId() throws Exception {
-        System.out.println(itemBonusRepository.findBonusListByItemId(147422));
+        System.out.println(itemBonusRepository.findBonusListsByItemId(147422));
     }
 
 }

@@ -1,7 +1,6 @@
 package com.bnade.wow.service;
 
 import com.bnade.wow.entity.Item;
-import com.bnade.wow.entity.ItemBonus;
 import com.bnade.wow.repository.ItemBonusRepository;
 import com.bnade.wow.repository.ItemRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -45,8 +44,23 @@ public class ItemService {
         List<Item> items = itemRepository.findByName(name);
         for (Item item : items) {
             // TODO 不是所有物品都有bonus list，这里可以优化
-            item.setBonusList(itemBonusRepository.findBonusListByItemId(item.getId()));
+            item.setBonusLists(itemBonusRepository.findBonusListsByItemId(item.getId()));
         }
         return items;
+    }
+
+    /**
+     * 通过id查询物品
+     * @param id 物品id
+     * @return 物品信息
+     */
+    public Item findById(Integer id) {
+        Item item = itemRepository.findOne(id);
+        if (item.getItemClass() == 2 || item.getItemClass() == 3 || item.getItemClass() == 4) { // 过滤，减少数据库查询
+            item.setBonusLists(itemBonusRepository.findBonusListsByItemId(item.getId()));
+        } else {
+            item.setBonusLists(new ArrayList<>(0));
+        }
+        return item;
     }
 }

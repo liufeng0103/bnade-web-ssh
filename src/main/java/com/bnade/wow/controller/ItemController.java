@@ -3,10 +3,7 @@ package com.bnade.wow.controller;
 import com.bnade.wow.entity.Item;
 import com.bnade.wow.service.ItemService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
@@ -23,6 +20,7 @@ public class ItemController {
 
     /**
      * 通过物品名查询物品
+     * GET /items?name={name}
      * @param name 物品名
      * @return 物品列表
      */
@@ -33,6 +31,7 @@ public class ItemController {
 
     /**
      * 查询所有包含查询值的物品名
+     * GET /items/names?search={search}&limit={limit}
      * @param search 查询名
      * @param limit 返回的条数,默认返回10条
      * @return 物品名列表
@@ -42,6 +41,17 @@ public class ItemController {
             @RequestParam(value = "search") String search,
             @RequestParam(value = "limit", defaultValue = "10") Integer limit) {
         return itemService.searchNamesByNameContaining(search, limit);
+    }
+
+    /**
+     * 通过物品id查询
+     * GET /items/{}
+     * @param id 物品id
+     * @return 物品信息
+     */
+    @GetMapping("/{id}")
+    public Item findById(@PathVariable("id") Integer id) {
+        return itemService.findById(id);
     }
 
 }

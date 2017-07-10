@@ -22,7 +22,7 @@ public class Item {
     private Integer level;
     private Integer hot;
     @Transient // 表示非表列
-    private List<String> bonusList;
+    private List<String> bonusLists;
 
     public Integer getId() {
         return id;
@@ -88,12 +88,12 @@ public class Item {
         this.hot = hot;
     }
 
-    public List<String> getBonusList() {
-        return bonusList;
+    public List<String> getBonusLists() {
+        return bonusLists;
     }
 
-    public void setBonusList(List<String> bonusList) {
-        this.bonusList = bonusList;
+    public void setBonusLists(List<String> bonusLists) {
+        this.bonusLists = bonusLists;
     }
 
     @Override
@@ -107,7 +107,7 @@ public class Item {
                 ", inventoryType=" + inventoryType +
                 ", level=" + level +
                 ", hot=" + hot +
-                ", bonusList=" + bonusList +
+                ", bonusLists=" + bonusLists +
                 '}';
     }
 }
