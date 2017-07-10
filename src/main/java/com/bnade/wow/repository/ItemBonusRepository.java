@@ -19,6 +19,6 @@ public interface ItemBonusRepository extends JpaRepository<ItemBonus, ItemBonusP
      * @return bonus组合列表
      */
     @Query(value = "SELECT ib.bonusList FROM ItemBonus ib WHERE ib.itemId=?1")
-    List<String> findBonusListByItemId(Integer itemId);
+    List<String> findBonusListsByItemId(Integer itemId);
 
 }
