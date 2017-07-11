@@ -56,10 +56,12 @@ public class ItemService {
      */
     public Item findById(Integer id) {
         Item item = itemRepository.findOne(id);
-        if (item.getItemClass() == 2 || item.getItemClass() == 3 || item.getItemClass() == 4) { // 过滤，减少数据库查询
-            item.setBonusLists(itemBonusRepository.findBonusListsByItemId(item.getId()));
-        } else {
-            item.setBonusLists(new ArrayList<>(0));
+        if (item != null) {
+            if (item.getItemClass() == 2 || item.getItemClass() == 3 || item.getItemClass() == 4) { // 过滤，减少数据库查询
+                item.setBonusLists(itemBonusRepository.findBonusListsByItemId(item.getId()));
+            } else {
+                item.setBonusLists(new ArrayList<>(0));
+            }
         }
         return item;
     }

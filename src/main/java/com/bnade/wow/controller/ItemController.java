@@ -45,7 +45,7 @@ public class ItemController {
 
     /**
      * 通过物品id查询
-     * GET /items/{}
+     * GET /items/{id}
      * @param id 物品id
      * @return 物品信息
      */

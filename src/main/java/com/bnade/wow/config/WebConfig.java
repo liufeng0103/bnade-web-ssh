@@ -13,7 +13,7 @@ import org.springframework.web.servlet.config.annotation.WebMvcConfigurerAdapter
 public class WebConfig extends WebMvcConfigurerAdapter {
 
     /**
-     * 添加跨域请求过滤器
+     * 添加跨域请求拦截器
      * @param registry
      */
     @Override
