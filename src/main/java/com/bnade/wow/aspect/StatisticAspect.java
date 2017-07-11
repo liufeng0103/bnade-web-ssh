@@ -53,7 +53,7 @@ public class StatisticAspect {
                 HttpServletRequest request = attributes.getRequest();
                 String ip = IPUtils.getIp(request);
                 // 统计物品搜索
-                logger.info("记录ip: {}, item: {}", ip, cheapestAuction.getItemId());
+                logger.debug("记录ip: {}, item: {}", ip, cheapestAuction.getItemId());
                 statisticService.recordItemSearchedByIp(ip, "" + cheapestAuction.getItemId());
             }
         }

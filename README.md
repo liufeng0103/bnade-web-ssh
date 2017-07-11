@@ -4,7 +4,8 @@
 ## 项目环境
 - java 1.8
 - mysql 5.7
-- maven 3.3.9
+- redis
+- maven
 - springBoot
 - druid 数据库连接池
 - logback 日志框架

@@ -8,3 +8,10 @@ spring:
     hibernate:
       ddl-auto: validate
     show-sql: true
+    properties:
+      hibernate.format_sql: true
+# 日志设置格式 logging.level.* = LEVEL, *为包名或Logger名
+logging:
+  level:
+    com:
+      bnade: DEBUG
