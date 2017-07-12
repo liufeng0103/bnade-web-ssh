@@ -2,13 +2,12 @@ package com.bnade.wow.handle;
 
 import com.bnade.wow.dto.Result;
 import com.bnade.wow.enums.ResultEnum;
-import com.bnade.wow.exception.BnadeException;
 import com.bnade.wow.exception.UnknownResourceException;
 import com.bnade.wow.utils.ResultUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.beans.ConversionNotSupportedException;
 import org.springframework.http.HttpStatus;
+import org.springframework.web.HttpRequestMethodNotSupportedException;
 import org.springframework.web.bind.MissingServletRequestParameterException;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
@@ -31,17 +30,20 @@ public class ExceptionHandle {
     @ResponseStatus(value = HttpStatus.NOT_FOUND)
     @ResponseBody
     public Result handle404Error(HttpServletRequest req) {
-        String url = req.getRequestURL() + "?" + req.getQueryString();
+        String url = req.getMethod() + " " + req.getRequestURL() + "?" + req.getQueryString();
         logger.debug("找不到url资源 {}", url);
         ResultEnum notFound = ResultEnum.NOT_FOUND;
         return ResultUtils.error(notFound.getCode(), notFound.getMessage(), url);
     }
 
-    @ExceptionHandler(value = {IllegalArgumentException.class, MissingServletRequestParameterException.class, MethodArgumentTypeMismatchException.class})
+    @ExceptionHandler(value = {IllegalArgumentException.class,
+            MissingServletRequestParameterException.class,
+            MethodArgumentTypeMismatchException.class,
+            HttpRequestMethodNotSupportedException.class})
     @ResponseStatus(value = HttpStatus.BAD_REQUEST)
     @ResponseBody
     public Result handle400Error(HttpServletRequest req, Exception e) {
-        String url = req.getRequestURL() + "?" + req.getQueryString();
+        String url = req.getMethod() + " " + req.getRequestURL() + "?" + req.getQueryString();
         logger.debug("不合法的url请求: {}", url);
         ResultEnum badRequest = ResultEnum.BAD_REQUEST;
         return ResultUtils.error(badRequest.getCode(), badRequest.getMessage(), url);
@@ -51,7 +53,7 @@ public class ExceptionHandle {
     @ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)
     @ResponseBody
     public Result handleError(HttpServletRequest req, Exception e) {
-        String url = req.getRequestURL() + "?" + req.getQueryString();
+        String url = req.getMethod() + " " + req.getRequestURL() + "?" + req.getQueryString();
         logger.error("url: {}", url, e);
         ResultEnum serverError = ResultEnum.INTERNAL_SERVER_ERROR;
         return ResultUtils.error(serverError.getCode(), serverError.getMessage(), req.getRequestURL().toString());
