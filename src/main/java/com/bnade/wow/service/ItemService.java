@@ -88,7 +88,8 @@ public class ItemService {
         for (Object[] itemSearchStatistic : itemDailySearchStatistics) {
             int itemId = ((Number)itemSearchStatistic[0]).intValue();
             int searchCount = ((Number)itemSearchStatistic[1]).intValue();
-            itemSearchStatisticDTOList.add(new ItemSearchStatisticDTO(itemId, searchCount, ItemSearchStatisticDTO.DAILY));
+            Item item = itemRepository.findOne(itemId);
+            itemSearchStatisticDTOList.add(new ItemSearchStatisticDTO(itemId, item.getName(), searchCount, ItemSearchStatisticDTO.DAILY));
         }
         // 每周
         LocalDate beforeWeekDate = todayDate.plusDays(-7);
@@ -97,7 +98,8 @@ public class ItemService {
         for (Object[] itemSearchStatistic : itemWeeklySearchStatistics) {
             int itemId = ((Number)itemSearchStatistic[0]).intValue();
             int searchCount = ((Number)itemSearchStatistic[1]).intValue();
-            itemSearchStatisticDTOList.add(new ItemSearchStatisticDTO(itemId, searchCount, ItemSearchStatisticDTO.WEEKLY));
+            Item item = itemRepository.findOne(itemId);
+            itemSearchStatisticDTOList.add(new ItemSearchStatisticDTO(itemId, item.getName(), searchCount, ItemSearchStatisticDTO.WEEKLY));
         }
         // 每月
         LocalDate boforeMonthDate = todayDate.plusMonths(-30);
@@ -105,7 +107,8 @@ public class ItemService {
         for (Object[] itemSearchStatistic : itemMonthlySearchStatistics) {
             int itemId = ((Number)itemSearchStatistic[0]).intValue();
             int searchCount = ((Number)itemSearchStatistic[1]).intValue();
-            itemSearchStatisticDTOList.add(new ItemSearchStatisticDTO(itemId, searchCount, ItemSearchStatisticDTO.MONTHLY));
+            Item item = itemRepository.findOne(itemId);
+            itemSearchStatisticDTOList.add(new ItemSearchStatisticDTO(itemId, item.getName(), searchCount, ItemSearchStatisticDTO.MONTHLY));
         }
         return itemSearchStatisticDTOList;
     }

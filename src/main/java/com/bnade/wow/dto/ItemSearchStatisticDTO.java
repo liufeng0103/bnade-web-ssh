@@ -11,14 +11,16 @@ public class ItemSearchStatisticDTO {
     public static final int MONTHLY = 3;
 
     private Integer itemId;
+    private String itemName;
     private Integer searchCount;
     private Integer type;
 
     public ItemSearchStatisticDTO() {
     }
 
-    public ItemSearchStatisticDTO(Integer itemId, Integer searchCount, Integer type) {
+    public ItemSearchStatisticDTO(Integer itemId, String itemName, Integer searchCount, Integer type) {
         this.itemId = itemId;
+        this.itemName = itemName;
         this.searchCount = searchCount;
         this.type = type;
     }
@@ -29,6 +31,14 @@ public class ItemSearchStatisticDTO {
 
     public void setItemId(Integer itemId) {
         this.itemId = itemId;
+    }
+
+    public String getItemName() {
+        return itemName;
+    }
+
+    public void setItemName(String itemName) {
+        this.itemName = itemName;
     }
 
     public Integer getSearchCount() {
@@ -51,6 +61,7 @@ public class ItemSearchStatisticDTO {
     public String toString() {
         return "ItemSearchStatisticDTO{" +
                 "itemId=" + itemId +
+                ", itemName=" + itemName +
                 ", searchCount=" + searchCount +
                 ", type=" + type +
                 '}';
