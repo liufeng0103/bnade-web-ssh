@@ -1,6 +1,8 @@
 package com.bnade.wow.controller;
 
+import com.bnade.wow.dto.ItemSearchStatisticDTO;
 import com.bnade.wow.entity.Item;
+import com.bnade.wow.entity.ItemSearchStatistic;
 import com.bnade.wow.service.ItemService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
@@ -52,6 +54,17 @@ public class ItemController {
     @GetMapping("/{id}")
     public Item findById(@PathVariable("id") Integer id) {
         return itemService.findById(id);
+    }
+
+    /**
+     * 搜索统计
+     * 目前只实现返回每日，每周，每月搜索最多的10个物品
+     *
+     * @return 统计列表
+     */
+    @GetMapping("/search-statistics")
+    public List<ItemSearchStatisticDTO> findSearchStatistics() {
+        return itemService.findSearchStatistics();
     }
 
 }

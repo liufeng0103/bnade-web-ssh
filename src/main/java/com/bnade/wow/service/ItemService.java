@@ -1,11 +1,15 @@
 package com.bnade.wow.service;
 
+import com.bnade.wow.dto.ItemSearchStatisticDTO;
 import com.bnade.wow.entity.Item;
+import com.bnade.wow.entity.ItemSearchStatistic;
 import com.bnade.wow.repository.ItemBonusRepository;
 import com.bnade.wow.repository.ItemRepository;
+import com.bnade.wow.repository.ItemSearchStatisticRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -20,6 +24,8 @@ public class ItemService {
     private ItemRepository itemRepository;
     @Autowired
     private ItemBonusRepository itemBonusRepository;
+    @Autowired
+    private ItemSearchStatisticRepository itemSearchStatisticRepository;
 
     public List<Item> search(String name) {
         return null;
@@ -64,5 +70,43 @@ public class ItemService {
             }
         }
         return item;
+    }
+
+    /**
+     * 获取物品搜索统计
+     * 目前返回每日，每周，每月各10条，以后需要可以扩展这个接口
+     *
+     * @return 统计结果列表
+     */
+    public List<ItemSearchStatisticDTO> findSearchStatistics() {
+        List<ItemSearchStatisticDTO> itemSearchStatisticDTOList = new ArrayList<>(30);
+        int size = 10;
+        LocalDate todayDate = LocalDate.now();
+        System.out.println(todayDate);
+        // 每日
+        List<Object[]> itemDailySearchStatistics = itemSearchStatisticRepository.findStartFrom(todayDate.toString(), 0, size);
+        for (Object[] itemSearchStatistic : itemDailySearchStatistics) {
+            int itemId = ((Number)itemSearchStatistic[0]).intValue();
+            int searchCount = ((Number)itemSearchStatistic[1]).intValue();
+            itemSearchStatisticDTOList.add(new ItemSearchStatisticDTO(itemId, searchCount, ItemSearchStatisticDTO.DAILY));
+        }
+        // 每周
+        LocalDate beforeWeekDate = todayDate.plusDays(-7);
+        System.out.println(beforeWeekDate);
+        List<Object[]> itemWeeklySearchStatistics = itemSearchStatisticRepository.findStartFrom(beforeWeekDate.toString(), 0, size);
+        for (Object[] itemSearchStatistic : itemWeeklySearchStatistics) {
+            int itemId = ((Number)itemSearchStatistic[0]).intValue();
+            int searchCount = ((Number)itemSearchStatistic[1]).intValue();
+            itemSearchStatisticDTOList.add(new ItemSearchStatisticDTO(itemId, searchCount, ItemSearchStatisticDTO.WEEKLY));
+        }
+        // 每月
+        LocalDate boforeMonthDate = todayDate.plusMonths(-30);
+        List<Object[]> itemMonthlySearchStatistics = itemSearchStatisticRepository.findStartFrom(boforeMonthDate.toString(), 0, size);
+        for (Object[] itemSearchStatistic : itemMonthlySearchStatistics) {
+            int itemId = ((Number)itemSearchStatistic[0]).intValue();
+            int searchCount = ((Number)itemSearchStatistic[1]).intValue();
+            itemSearchStatisticDTOList.add(new ItemSearchStatisticDTO(itemId, searchCount, ItemSearchStatisticDTO.MONTHLY));
+        }
+        return itemSearchStatisticDTOList;
     }
 }

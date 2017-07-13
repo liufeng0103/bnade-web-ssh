@@ -14,11 +14,11 @@ import javax.validation.Valid;
 import java.util.List;
 
 /**
- * 对拍卖数据的操作
+ * 最低一口价拍卖数据的操作
  * Created by liufeng0103@163.com on 2017/6/12.
  */
 @RestController
-@RequestMapping("/cheapest_auctions")
+@RequestMapping(value = {"/cheapest_auctions", "/cheapest-auctions"})
 public class CheapestAuctionController {
 
     @Autowired
