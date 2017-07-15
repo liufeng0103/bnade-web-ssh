@@ -6,8 +6,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit4.SpringRunner;
 
-import static org.junit.Assert.*;
-
 /**
  * Created by liufeng0103@163.com on 2017/7/11.
  */
@@ -29,4 +27,9 @@ public class StatisticServiceTest {
         statisticService.recordItemSearchedByIp("127.0.0.1", "1");
     }
 
+
+    @Test
+    public void findSearchStatisticsTest() throws Exception {
+        System.out.println(statisticService.findItemSearchStatistics());
+    }
 }

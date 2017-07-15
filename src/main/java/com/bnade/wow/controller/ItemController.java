@@ -2,8 +2,8 @@ package com.bnade.wow.controller;
 
 import com.bnade.wow.dto.ItemSearchStatisticDTO;
 import com.bnade.wow.entity.Item;
-import com.bnade.wow.entity.ItemSearchStatistic;
 import com.bnade.wow.service.ItemService;
+import com.bnade.wow.service.StatisticService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
@@ -19,6 +19,8 @@ public class ItemController {
 
     @Autowired
     private ItemService itemService;
+    @Autowired
+    private StatisticService statisticService;
 
     /**
      * 通过物品名查询物品
@@ -64,7 +66,7 @@ public class ItemController {
      */
     @GetMapping("/search-statistics")
     public List<ItemSearchStatisticDTO> findSearchStatistics() {
-        return itemService.findSearchStatistics();
+        return statisticService.findItemSearchStatistics();
     }
 
 }

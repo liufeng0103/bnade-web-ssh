@@ -28,8 +28,4 @@ public class ItemServiceTest {
         System.out.println(itemService.findById(124105));
     }
 
-    @Test
-    public void findSearchStatisticsTest() throws Exception {
-        System.out.println(itemService.findSearchStatistics());
-    }
 }
