@@ -11,13 +11,4 @@
 - logback 日志框架
 
 ## 接口
-
-方法|URI|可选参数|说明
--|-|-|-
-GET|/realms/{id}/auctions|itemId owner|查询卖家，物品的拍卖
-GET|/auctions|realmId itemId|查询卖家，物品的拍卖
-GET|/wowtokens||查询所有时光徽章数据
-
-- GET /items/{id} 通过id查询物品
-- GET /items?search={name} 查询含有name物品名的物品
-- GET /items/names?search={name} 查询含有name物品名
+[https://www.bnade.com/api-doc/](https://www.bnade.com/api-doc/)
