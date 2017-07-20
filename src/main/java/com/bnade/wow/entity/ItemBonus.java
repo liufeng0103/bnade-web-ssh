@@ -1,6 +1,8 @@
 package com.bnade.wow.entity;
 
-import javax.persistence.*;
+import javax.persistence.Entity;
+import javax.persistence.Id;
+import javax.persistence.IdClass;
 
 /**
  * 物品奖励

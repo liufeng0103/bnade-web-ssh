@@ -2,7 +2,9 @@ package com.bnade.wow.entity;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
-import javax.persistence.*;
+import javax.persistence.Entity;
+import javax.persistence.Id;
+import javax.persistence.Transient;
 import java.util.List;
 
 /**
@@ -10,7 +12,8 @@ import java.util.List;
  * Created by liufeng0103@163.com on 2017/6/27.
  */
 @Entity
-@JsonIgnoreProperties(value = {"icon", "itemClass", "itemSubClass", "inventoryType", "hot"})
+@JsonIgnoreProperties(ignoreUnknown = true, value = {"icon", "itemClass", "itemSubClass", "inventoryType", "hot"})
+//@JsonInclude(JsonInclude.Include.NON_NULL) json中属性为null时不生成该字段
 public class Item {
     @Id
     private Integer id;

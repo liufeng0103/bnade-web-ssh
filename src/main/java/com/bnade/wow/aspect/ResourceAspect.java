@@ -20,17 +20,28 @@ public class ResourceAspect {
 
     private final static Logger logger = LoggerFactory.getLogger(ResourceAspect.class);
 
-    @Around("execution(public * com.bnade.wow.controller.*.*(..))")
+    /**
+     * 对controller的所有方法处理
+     * @param point 切点
+     * @return 方法返回结果
+     * @throws Throwable 方法返回的异常
+     */
+    @Around(value = "execution(public * com.bnade.wow.controller.*.*(..))")
     public Object process(ProceedingJoinPoint point) throws Throwable {
         Object returnValue = point.proceed(point.getArgs());
-        // 找不到的资源返回UnknownResourceException异常，在异常处理中将http状态码设置为404
-        if (returnValue == null) { // 空对象
-            throw new UnknownResourceException();
-        } else if (returnValue instanceof List && ((List) returnValue).size() == 0) { // 空数组
-            throw new UnknownResourceException();
-        }
+        emptyResultHandler(returnValue);
         return returnValue;
     }
 
-
+    /**
+     * 找不到的资源返回UnknownResourceException异常，在异常处理中将http状态码设置为404
+     * @param returnValue
+     */
+     private void emptyResultHandler(Object returnValue) {
+         if (returnValue == null) { // 空对象
+             throw new UnknownResourceException();
+         } else if (returnValue instanceof List && ((List) returnValue).size() == 0) { // 空数组
+             throw new UnknownResourceException();
+         }
+     }
 }

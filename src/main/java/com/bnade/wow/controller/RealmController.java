@@ -5,7 +5,10 @@ import com.bnade.wow.entity.Realm;
 import com.bnade.wow.service.AuctionService;
 import com.bnade.wow.service.RealmService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
 
 import java.util.List;
 
@@ -36,6 +39,10 @@ public class RealmController {
         return auctionController.findAll(auction);
     }
 
+    /**
+     * 查询所有服务器信息
+     * @return 服务器列表
+     */
     @GetMapping
     public List<Realm> findAll() {
         return realmService.findAll();

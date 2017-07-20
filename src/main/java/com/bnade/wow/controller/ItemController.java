@@ -51,7 +51,7 @@ public class ItemController {
      * 通过物品id查询
      * GET /items/{id}
      * @param id 物品id
-     * @return 物品信息
+     * @return Item 物品信息
      */
     @GetMapping("/{id}")
     public Item findById(@PathVariable("id") Integer id) {
@@ -62,7 +62,7 @@ public class ItemController {
      * 搜索统计
      * 目前只实现返回每日，每周，每月搜索最多的10个物品
      *
-     * @return 统计列表
+     * @return List<ItemSearchStatisticDTO> 统计列表
      */
     @GetMapping("/search-statistics")
     public List<ItemSearchStatisticDTO> findSearchStatistics() {

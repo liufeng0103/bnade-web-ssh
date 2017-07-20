@@ -1,6 +1,7 @@
 package com.bnade.wow.entity;
 
 import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 
 /**
@@ -11,6 +12,7 @@ import javax.persistence.Id;
 public class ItemSearchStatistic {
 
     @Id
+    @GeneratedValue
     private Integer id;
     private Integer itemId;
     private Integer searchCount;
