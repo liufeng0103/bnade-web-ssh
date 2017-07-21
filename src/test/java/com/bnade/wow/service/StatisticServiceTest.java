@@ -17,7 +17,7 @@ public class StatisticServiceTest {
     private StatisticService statisticService;
 
     @Test
-    public void recordItemSearchedByIpTest() throws Exception {
+    public void testRecordItemSearchedByIp() throws Exception {
         statisticService.recordItemSearchedByIp("127.0.0.1", "1");
         statisticService.recordItemSearchedByIp("127.0.0.1", "2");
         statisticService.recordItemSearchedByIp("127.0.0.1", "3");
@@ -29,7 +29,7 @@ public class StatisticServiceTest {
 
 
     @Test
-    public void findSearchStatisticsTest() throws Exception {
+    public void testFindSearchStatistics() throws Exception {
         System.out.println(statisticService.findItemSearchStatistics());
     }
 }

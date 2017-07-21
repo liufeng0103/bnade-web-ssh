@@ -11,6 +11,7 @@ import org.springframework.stereotype.Service;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.concurrent.*;
 
 /**
  * 数据统计服务
@@ -43,36 +44,59 @@ public class StatisticService {
      * @return 统计结果列表
      */
     public List<ItemSearchStatisticDTO> findItemSearchStatistics() {
+        return getItemSearchStatisticsAsync();
+    }
+
+    /**
+     * 异步获取每日，每周，每月的统计数据
+     * @return 统计列表包含每日，每周，每月的统计数据
+     */
+    private List<ItemSearchStatisticDTO> getItemSearchStatisticsAsync() {
         List<ItemSearchStatisticDTO> itemSearchStatisticDTOList = new ArrayList<>(30);
         int size = 10;
-        LocalDate todayDate = LocalDate.now();
+
         // 每日
-        List<Object[]> itemDailySearchStatistics = itemSearchStatisticRepository.findStartFrom(todayDate.toString(), 0, size);
-        for (Object[] itemSearchStatistic : itemDailySearchStatistics) {
-            int itemId = ((Number)itemSearchStatistic[0]).intValue();
-            int searchCount = ((Number)itemSearchStatistic[1]).intValue();
-            Item item = itemRepository.findOne(itemId);
-            itemSearchStatisticDTOList.add(new ItemSearchStatisticDTO(itemId, item.getName(), searchCount, ItemSearchStatisticDTO.DAILY));
-        }
+        LocalDate todayDate = LocalDate.now();
+        Future<List<Object[]>> itemDailySearchStatistics = findDateSearchStatistics(todayDate.toString(), size);
         // 每周
         LocalDate beforeWeekDate = todayDate.plusDays(-7);
-        List<Object[]> itemWeeklySearchStatistics = itemSearchStatisticRepository.findStartFrom(beforeWeekDate.toString(), 0, size);
-        for (Object[] itemSearchStatistic : itemWeeklySearchStatistics) {
-            int itemId = ((Number)itemSearchStatistic[0]).intValue();
-            int searchCount = ((Number)itemSearchStatistic[1]).intValue();
-            Item item = itemRepository.findOne(itemId);
-            itemSearchStatisticDTOList.add(new ItemSearchStatisticDTO(itemId, item.getName(), searchCount, ItemSearchStatisticDTO.WEEKLY));
-        }
+        Future<List<Object[]>> itemWeeklySearchStatistics = findDateSearchStatistics(beforeWeekDate.toString(), size);
         // 每月
-        LocalDate boforeMonthDate = todayDate.plusMonths(-30);
-        List<Object[]> itemMonthlySearchStatistics = itemSearchStatisticRepository.findStartFrom(boforeMonthDate.toString(), 0, size);
-        for (Object[] itemSearchStatistic : itemMonthlySearchStatistics) {
-            int itemId = ((Number)itemSearchStatistic[0]).intValue();
-            int searchCount = ((Number)itemSearchStatistic[1]).intValue();
-            Item item = itemRepository.findOne(itemId);
-            itemSearchStatisticDTOList.add(new ItemSearchStatisticDTO(itemId, item.getName(), searchCount, ItemSearchStatisticDTO.MONTHLY));
-        }
+        LocalDate beforeMonthDate = todayDate.plusMonths(-30);
+        Future<List<Object[]>> itemMonthlySearchStatistics = findDateSearchStatistics(beforeMonthDate.toString(), size);
+        fillItemSearchStatisticList(itemSearchStatisticDTOList, itemDailySearchStatistics, ItemSearchStatisticDTO.DAILY);
+        fillItemSearchStatisticList(itemSearchStatisticDTOList, itemWeeklySearchStatistics, ItemSearchStatisticDTO.WEEKLY);
+        fillItemSearchStatisticList(itemSearchStatisticDTOList, itemMonthlySearchStatistics, ItemSearchStatisticDTO.MONTHLY);
         return itemSearchStatisticDTOList;
+    }
+
+    /**
+     * 异步获取某个日期之后的搜索统计数据
+     * @param date 搜索开始日期
+     * @param size 返回数据数
+     * @return 结果列表
+     */
+    private Future<List<Object[]>> findDateSearchStatistics(String date, int size) {
+        return CompletableFuture.supplyAsync(() -> itemSearchStatisticRepository.findStartFrom(date.toString(), 0, size));
+    }
+
+    /**
+     * 把搜索结果放到List itemSearchStatisticDTOList中
+     * @param itemSearchStatisticDTOList 搜索结果列表
+     * @param itemDateSearchStatistics 搜索数据
+     * @param type 搜索数据类型， 每日，每周还是每月
+     */
+    private void fillItemSearchStatisticList(List<ItemSearchStatisticDTO> itemSearchStatisticDTOList, Future<List<Object[]>> itemDateSearchStatistics, int type) {
+        try {
+            for (Object[] itemSearchStatistic : itemDateSearchStatistics.get(3, TimeUnit.SECONDS)) {
+                int itemId = ((Number)itemSearchStatistic[0]).intValue();
+                int searchCount = ((Number)itemSearchStatistic[1]).intValue();
+                Item item = itemRepository.findOne(itemId);
+                itemSearchStatisticDTOList.add(new ItemSearchStatisticDTO(itemId, item.getName(), searchCount, type));
+            }
+        } catch (InterruptedException | ExecutionException | TimeoutException e) {
+            e.printStackTrace();
+        }
     }
 
 }
