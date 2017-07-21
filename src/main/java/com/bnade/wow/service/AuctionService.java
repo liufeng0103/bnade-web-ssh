@@ -32,22 +32,37 @@ public class AuctionService {
      * @return
      */
     public List<Auction> findAll(final Auction auction) {
-        return auctionRepository.findAll(new Specification<Auction>() {
-            @Override
-            public Predicate toPredicate(Root<Auction> root, CriteriaQuery<?> criteriaQuery, CriteriaBuilder criteriaBuilder) {
-                List<Predicate> list = new ArrayList<Predicate>();
-                if (null != auction.getRealmId()) {
-                    list.add(criteriaBuilder.equal(root.get("realmId"), auction.getRealmId()));
-                }
-                if (null != auction.getItemId()) {
-                    list.add(criteriaBuilder.equal(root.get("itemId"), auction.getItemId()));
-                }
-                if (null != auction.getOwner()) {
-                    list.add(criteriaBuilder.equal(root.get("owner"), auction.getOwner()));
-                }
-                criteriaQuery.where(list.toArray(new Predicate[list.size()]));
-                return null;
+        // 参数验证
+        // 由于通过realmId分区表，为了避免所有分区搜索，参数必须有realmId
+        if (null == auction.getRealmId()) {
+            throw new IllegalArgumentException("服务器id不能为空");
+        }
+        // 由于还未对结果分页，不指定itemId将有太多数据返回
+        if (null == auction.getItemId()) {
+            throw new IllegalArgumentException("最低一口价查询物品id不能为空");
+        }
+        return auctionRepository.findAll((Root<Auction> root, CriteriaQuery<?> criteriaQuery, CriteriaBuilder criteriaBuilder) -> {
+            List<Predicate> list = new ArrayList<Predicate>();
+            if (null != auction.getRealmId()) {
+                list.add(criteriaBuilder.equal(root.get("realmId"), auction.getRealmId()));
             }
+            if (null != auction.getItemId()) {
+                list.add(criteriaBuilder.equal(root.get("itemId"), auction.getItemId()));
+            }
+            if (null != auction.getBonusList()) {
+                list.add(criteriaBuilder.equal(root.get("bonusList"), auction.getBonusList()));
+            }
+            if (null != auction.getPetSpeciesId()) {
+                list.add(criteriaBuilder.equal(root.get("petSpeciesId"), auction.getPetSpeciesId()));
+            }
+            if (null != auction.getPetBreedId()) {
+                list.add(criteriaBuilder.equal(root.get("petBreedId"), auction.getPetBreedId()));
+            }
+            if (null != auction.getOwner()) {
+                list.add(criteriaBuilder.equal(root.get("owner"), auction.getOwner()));
+            }
+            criteriaQuery.where(list.toArray(new Predicate[list.size()]));
+            return null;
         });
     }
 

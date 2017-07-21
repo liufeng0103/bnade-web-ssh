@@ -28,6 +28,10 @@ public class AuctionController {
      */
     @GetMapping
     public List<Auction> findAll(@Valid Auction auction) {
+        // BonusList默认为空
+        if (null == auction.getBonusList()) {
+            auction.setBonusList("");
+        }
         return auctionService.findAll(auction);
     }
 

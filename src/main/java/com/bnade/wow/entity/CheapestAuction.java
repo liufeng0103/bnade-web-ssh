@@ -12,7 +12,7 @@ import javax.validation.constraints.NotNull;
  * Created by liufeng0103@163.com on 2017/6/11.
  */
 @Entity
-@JsonIgnoreProperties(value = {"id", "auc", "ownerRealm", "bid", "context"}) // 不需要转json字段
+@JsonIgnoreProperties(value = {"id", "auc", "ownerRealm", "bid", "context", "petSpeciesId", "petLevel", "petBreedId"}) // 不需要转json字段
 public class CheapestAuction {
     @Id
     @GeneratedValue
