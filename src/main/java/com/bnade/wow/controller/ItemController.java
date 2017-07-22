@@ -11,6 +11,7 @@ import java.util.List;
 
 /**
  * 物品查询controller
+ *
  * Created by liufeng0103@163.com on 2017/6/27.
  */
 @RestController
@@ -25,6 +26,7 @@ public class ItemController {
     /**
      * 通过物品名查询物品
      * GET /items?name={name}
+     *
      * @param name 物品名
      * @return 物品列表
      */
@@ -36,6 +38,7 @@ public class ItemController {
     /**
      * 查询所有包含查询值的物品名
      * GET /items/names?search={search}&limit={limit}
+     *
      * @param search 查询名
      * @param limit 返回的条数,默认返回10条
      * @return 物品名列表
@@ -50,12 +53,26 @@ public class ItemController {
     /**
      * 通过物品id查询
      * GET /items/{id}
+     *
      * @param id 物品id
      * @return Item 物品信息
      */
     @GetMapping("/{id}")
     public Item findById(@PathVariable("id") Integer id) {
         return itemService.findById(id);
+    }
+
+    /**
+     * 获取物品提示信息
+     *
+     * @param id 物品id
+     * @param bonusList 物品奖励
+     * @return 物品提示，格式为html片段
+     */
+    @GetMapping("/{id}/tooltips")
+    public String getTooltips(@PathVariable("id") Integer id,
+                              @RequestParam(value = "bonusList", defaultValue = "") String bonusList) {
+        return itemService.getTooltipByIdAndBonusList(id, bonusList);
     }
 
     /**
