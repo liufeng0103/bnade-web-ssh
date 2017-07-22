@@ -54,8 +54,8 @@ public class ExceptionHandle {
     @ResponseBody
     public Result handleError(HttpServletRequest req, Exception e) {
         String url = req.getMethod() + " " + req.getRequestURL() + "?" + req.getQueryString();
-        logger.error("url: {}", url, e);
+        logger.error("未知错误url: {}", url, e);
         ResultEnum serverError = ResultEnum.INTERNAL_SERVER_ERROR;
-        return ResultUtils.error(serverError.getCode(), serverError.getMessage(), req.getRequestURL().toString());
+        return ResultUtils.error(serverError.getCode(), serverError.getMessage(), url);
     }
 }
