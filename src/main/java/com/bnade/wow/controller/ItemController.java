@@ -69,8 +69,8 @@ public class ItemController {
      * @param bonusList 物品奖励
      * @return 物品提示，格式为html片段
      */
-    @GetMapping("/{id}/tooltips")
-    public String getTooltips(@PathVariable("id") Integer id,
+    @GetMapping(value = {"/{id}/tooltips", "/{id}/tooltip"})
+    public String getTooltip(@PathVariable("id") Integer id,
                               @RequestParam(value = "bonusList", defaultValue = "") String bonusList) {
         return itemService.getTooltipByIdAndBonusList(id, bonusList);
     }
