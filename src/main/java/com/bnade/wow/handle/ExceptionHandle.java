@@ -7,6 +7,7 @@ import com.bnade.wow.utils.ResultUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpStatus;
+import org.springframework.validation.BindException;
 import org.springframework.web.HttpRequestMethodNotSupportedException;
 import org.springframework.web.bind.MissingServletRequestParameterException;
 import org.springframework.web.bind.annotation.ControllerAdvice;
@@ -37,6 +38,7 @@ public class ExceptionHandle {
     }
 
     @ExceptionHandler(value = {IllegalArgumentException.class,
+            BindException.class, // controller中参数绑定bean时异常，如数据类型不匹配等
             MissingServletRequestParameterException.class,
             MethodArgumentTypeMismatchException.class,
             HttpRequestMethodNotSupportedException.class})
