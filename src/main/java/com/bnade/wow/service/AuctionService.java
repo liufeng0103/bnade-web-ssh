@@ -37,9 +37,9 @@ public class AuctionService {
         if (null == auction.getRealmId()) {
             throw new IllegalArgumentException("服务器id不能为空");
         }
-        // 由于还未对结果分页，不指定itemId将有太多数据返回
-        if (null == auction.getItemId()) {
-            throw new IllegalArgumentException("最低一口价查询物品id不能为空");
+        // 由于还未对结果分页，不指定条件将有太多数据返回，暂时做限制处理，以后考虑分页
+        if (null == auction.getItemId() && null == auction.getOwner()) {
+            throw new IllegalArgumentException("物品id或卖家不能同时为空");
         }
         return auctionRepository.findAll((Root<Auction> root, CriteriaQuery<?> criteriaQuery, CriteriaBuilder criteriaBuilder) -> {
             List<Predicate> list = new ArrayList<Predicate>();
