@@ -15,6 +15,10 @@ import java.util.List;
 @JsonIgnoreProperties(ignoreUnknown = true, value = {"icon", "itemClass", "itemSubClass", "inventoryType", "hot"})
 //@JsonInclude(JsonInclude.Include.NON_NULL) json中属性为null时不生成该字段
 public class Item {
+
+    // 宠物笼id
+    public static final int PET_CAGE_ID = 82800;
+
     @Id
     private Integer id;
     private String name;
