@@ -13,6 +13,7 @@ import org.springframework.stereotype.Service;
 
 import java.io.FileNotFoundException;
 import java.io.IOException;
+import java.net.SocketTimeoutException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.TimeUnit;
@@ -106,6 +107,9 @@ public class ItemService {
             } catch (FileNotFoundException e) {
                 // 404 物品信息找不到
                 logger.info("获取不到物品id: {} bonusList: {} 信息", id, bonusList);
+            }  catch (SocketTimeoutException e) {
+                // 查询超时
+                logger.info("查询物品超时id: {} bonusList: {}", id, bonusList);
             } catch (IOException e) {
                 logger.info("通过http获取物品id: {} bonusList: {} 信息出错", id, bonusList,e);
             }
