@@ -11,7 +11,7 @@ import javax.validation.constraints.NotNull;
  * Created by liufeng0103@163.com on 2017/6/12.
  */
 @Entity
-@JsonIgnoreProperties(value = {"auc", "context", "petSpeciesId", "petLevel", "petBreedId"}) // 不需要转json字段
+@JsonIgnoreProperties(value = {"auc", "context", "petLevel", "petBreedId"}) // 不需要转json字段
 public class Auction {
     @Id
     private Integer auc;
