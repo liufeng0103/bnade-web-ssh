@@ -1,5 +1,6 @@
 package com.bnade.wow.controller;
 
+import com.bnade.wow.dto.AuctionDTO;
 import com.bnade.wow.entity.Auction;
 import com.bnade.wow.entity.Realm;
 import com.bnade.wow.service.AuctionService;
@@ -33,8 +34,8 @@ public class RealmController {
      * @return 所有满足条件的拍卖数据
      */
     @GetMapping(value="/{realmId}/auctions")
-    public List<Auction> getAuctions(@PathVariable("realmId") Integer realmId,
-                                     Auction auction) {
+    public List<AuctionDTO> getAuctions(@PathVariable("realmId") Integer realmId,
+                                        Auction auction) {
         auction.setRealmId(realmId);
         return auctionController.findAll(auction);
     }

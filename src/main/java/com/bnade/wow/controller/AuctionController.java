@@ -1,13 +1,20 @@
 package com.bnade.wow.controller;
 
+import com.bnade.wow.dto.AuctionDTO;
 import com.bnade.wow.entity.Auction;
+import com.bnade.wow.entity.Item;
+import com.bnade.wow.entity.Pet;
 import com.bnade.wow.service.AuctionService;
+import com.bnade.wow.service.ItemService;
+import com.bnade.wow.service.PetService;
+import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import javax.validation.Valid;
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -20,6 +27,10 @@ public class AuctionController {
 
     @Autowired
     private AuctionService auctionService;
+    @Autowired
+    private ItemService itemService;
+    @Autowired
+    private PetService petService;
 
     /**
      * 查询某个服务器下的拍卖数据信息
@@ -27,7 +38,7 @@ public class AuctionController {
      * @return 所有满足条件的拍卖数据
      */
     @GetMapping
-    public List<Auction> findAll(@Valid Auction auction) {
+    public List<AuctionDTO> findAll(@Valid Auction auction) {
         /**
          * auction的bonusList为null时，查询时bonusList将不作为查询条件，这样会查询所有bonusList类型的物品
          * 而""是一种bonusList类型，get url无法传值""给bonusList
@@ -39,7 +50,31 @@ public class AuctionController {
         } else if ("all".equals(auction.getBonusList())) {
             auction.setBonusList(null);
         }
-        return auctionService.findAll(auction);
+        List<Auction> auctions = auctionService.findAll(auction);
+        List<AuctionDTO> auctionDTOList = new ArrayList<>(auctions.size());
+        for (Auction auc : auctions) {
+            AuctionDTO auctionDTO = new AuctionDTO();
+            BeanUtils.copyProperties(auc, auctionDTO);
+            if (Item.PET_CAGE_ID != auc.getItemId()) {
+                Item item = itemService.findById(auc.getItemId());
+                if (item != null) {
+                    auctionDTO.setItemName(item.getName());
+                    auctionDTO.setItemLevel(item.getLevel());
+                    auctionDTO.setItemIcon(item.getIcon());
+                }
+            } else {
+                auctionDTO.setItemName("宠物笼");
+                auctionDTO.setItemLevel(20);
+                auctionDTO.setItemIcon("inv_box_petcarrier_01");
+                Pet pet = petService.findById(auc.getPetSpeciesId());
+                if (pet != null) {
+                    auctionDTO.setPetName(pet.getName());
+                    auctionDTO.setPetIcon(pet.getIcon());
+                }
+            }
+            auctionDTOList.add(auctionDTO);
+        }
+        return auctionDTOList;
     }
 
 }

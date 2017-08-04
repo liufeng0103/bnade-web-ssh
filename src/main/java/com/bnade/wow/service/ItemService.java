@@ -8,6 +8,7 @@ import com.bnade.wow.utils.HttpUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.data.redis.core.StringRedisTemplate;
 import org.springframework.stereotype.Service;
 
@@ -69,6 +70,7 @@ public class ItemService {
      * @param id 物品id
      * @return 物品信息
      */
+    @Cacheable(cacheNames = "items", key = "#id")
     public Item findById(Integer id) {
         Item item = itemRepository.findOne(id);
         if (item != null) {
@@ -91,7 +93,6 @@ public class ItemService {
      * @return 物品提示信息，格式为html片段
      */
     public String getTooltipByIdAndBonusList(Integer id, String bonusList) {
-        int timeout = 60; // 60分钟后过期
         String key = "tooltip" + id + "-" + bonusList;
         String result = stringRedisTemplate.opsForValue().get(key);
         if (null == result) {
@@ -102,8 +103,8 @@ public class ItemService {
                         .replaceAll("\r|\n", "") // 去掉回车换行
                         .replaceAll("href=\"[^\"]*\"", "href=\"\""); // 替换掉html中的超链接的地址
                 result = tooltip;
-                stringRedisTemplate.opsForValue().set(key, tooltip);
-                stringRedisTemplate.expire(key, timeout, TimeUnit.MINUTES);
+                int timeout = 60 * 12; // 缓存多久过期
+                stringRedisTemplate.opsForValue().set(key, tooltip, timeout, TimeUnit.MINUTES);
             } catch (FileNotFoundException e) {
                 // 404 物品信息找不到
                 logger.info("获取不到物品id: {} bonusList: {} 信息", id, bonusList);

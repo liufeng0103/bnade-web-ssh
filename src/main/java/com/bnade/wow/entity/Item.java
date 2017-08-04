@@ -5,6 +5,7 @@ import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.persistence.Transient;
+import java.io.Serializable;
 import java.util.List;
 
 /**
@@ -14,7 +15,7 @@ import java.util.List;
 @Entity
 @JsonIgnoreProperties(ignoreUnknown = true, value = {"icon", "itemClass", "itemSubClass", "inventoryType", "hot"})
 //@JsonInclude(JsonInclude.Include.NON_NULL) json中属性为null时不生成该字段
-public class Item {
+public class Item implements Serializable {
 
     // 宠物笼id
     public static final int PET_CAGE_ID = 82800;
