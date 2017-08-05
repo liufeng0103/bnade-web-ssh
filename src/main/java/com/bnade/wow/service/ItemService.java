@@ -101,6 +101,7 @@ public class ItemService {
                 String tooltip = HttpUtils.get(url);
                 tooltip = tooltip
                         .replaceAll("\r|\n", "") // 去掉回车换行
+                        .replaceAll("https://render-cn.worldofwarcraft.com", "http://content.battlenet.com.cn/wow")
                         .replaceAll("href=\"[^\"]*\"", "href=\"\""); // 替换掉html中的超链接的地址
                 result = tooltip;
                 int timeout = 60 * 12; // 缓存多久过期
