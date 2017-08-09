@@ -13,7 +13,8 @@ import javax.validation.Valid;
 import java.util.List;
 
 /**
- * 时光徽章
+ * 留言板
+ *
  * Created by liufeng0103@163.com on 2017/6/6.
  */
 @RestController
