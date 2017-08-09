@@ -67,12 +67,12 @@ public class ItemService {
 
     /**
      * 通过id查询物品
-     * @param id 物品id
+     * @param itemId 物品id
      * @return 物品信息
      */
-    @Cacheable(cacheNames = "items", key = "#id")
-    public Item findById(Integer id) {
-        Item item = itemRepository.findOne(id);
+    @Cacheable(cacheNames = "items", keyGenerator="customKeyGenerator")
+    public Item findById(Integer itemId) {
+        Item item = itemRepository.findOne(itemId);
         if (item != null) {
             if (item.getItemClass() == 2 || item.getItemClass() == 3 || item.getItemClass() == 4) { // 过滤，减少数据库查询
                 item.setBonusLists(itemBonusRepository.findBonusListsByItemId(item.getId()));

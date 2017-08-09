@@ -23,12 +23,12 @@ public class PetService {
     /**
      * 通过id查询宠物信息
      *
-     * @param id 宠物id，在拍卖数据中叫petSpeciesId
+     * @param petId 宠物id，在拍卖数据中叫petSpeciesId
      * @return Pet 宠物信息
      */
-    @Cacheable("pets")
-    public Pet findById(Integer id) {
-        return petRepository.findOne(id);
+    @Cacheable(cacheNames="pets", keyGenerator="customKeyGenerator")
+    public Pet findById(Integer petId) {
+        return petRepository.findOne(petId);
     }
 
 }
