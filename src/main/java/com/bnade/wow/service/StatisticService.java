@@ -2,9 +2,15 @@ package com.bnade.wow.service;
 
 import com.bnade.wow.dto.ItemSearchStatisticDTO;
 import com.bnade.wow.entity.Item;
+import com.bnade.wow.entity.ItemStatistic;
 import com.bnade.wow.repository.ItemRepository;
 import com.bnade.wow.repository.ItemSearchStatisticRepository;
+import com.bnade.wow.repository.ItemStatisticRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.data.redis.core.StringRedisTemplate;
 import org.springframework.stereotype.Service;
 
@@ -24,6 +30,8 @@ public class StatisticService {
     private StringRedisTemplate stringRedisTemplate;
     @Autowired
     private ItemRepository itemRepository;
+    @Autowired
+    private ItemStatisticRepository itemStatisticRepository;
     @Autowired
     private ItemSearchStatisticRepository itemSearchStatisticRepository;
 
@@ -99,4 +107,9 @@ public class StatisticService {
         }
     }
 
+    public List<ItemStatistic> findAllItemStatistic(Integer page, Integer size) {
+        Sort sort = new Sort(Sort.Direction.DESC, "marketPrice");
+        Pageable pageable = new PageRequest(page, size, sort);
+        return itemStatisticRepository.findAll(pageable).getContent();
+    }
 }

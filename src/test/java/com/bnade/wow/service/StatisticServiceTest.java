@@ -32,4 +32,9 @@ public class StatisticServiceTest {
     public void testFindSearchStatistics() throws Exception {
         System.out.println(statisticService.findItemSearchStatistics());
     }
+
+    @Test
+    public void findAllItemStatistic() throws Exception {
+        System.out.println(statisticService.findAllItemStatistic(1, 2));
+    }
 }
