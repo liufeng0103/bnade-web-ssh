@@ -1,12 +1,19 @@
 package com.bnade.wow.controller;
 
 import com.bnade.wow.dto.ItemSearchStatisticDTO;
+import com.bnade.wow.dto.ItemStatisticDTO;
 import com.bnade.wow.entity.Item;
+import com.bnade.wow.entity.ItemStatistic;
 import com.bnade.wow.service.ItemService;
 import com.bnade.wow.service.StatisticService;
+import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
+import org.springframework.data.web.PageableDefault;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -84,6 +91,34 @@ public class ItemController {
     @GetMapping("/search-statistics")
     public List<ItemSearchStatisticDTO> findSearchStatistics() {
         return statisticService.findItemSearchStatistics();
+    }
+
+    /**
+     * 物品统计
+     * url例子/statistics?page=10&size=50&sort=marketPrice,desc
+     *
+     * @param pageable size默认50，sort默认marketPrice倒序
+     * @return
+     */
+    @GetMapping("/statistics")
+    public List<ItemStatisticDTO> findStatistics(@PageableDefault(value = 50, sort = {"marketPrice"}, direction = Sort.Direction.DESC) Pageable pageable) {
+        // 检查返回size，避免返回过大数据
+        int maxSize = 100;
+        if (pageable.getPageSize() > maxSize) {
+            throw new IllegalArgumentException("超过最大返回数据量：" + maxSize);
+        }
+        List<ItemStatistic> itemStatistics = statisticService.findAllItemStatistic(pageable);
+        List<ItemStatisticDTO> itemStatisticDTOs = new ArrayList<>(itemStatistics.size());
+        for (ItemStatistic itemStatistic : itemStatistics) {
+            ItemStatisticDTO itemStatisticDTO = new ItemStatisticDTO();
+            BeanUtils.copyProperties(itemStatistic, itemStatisticDTO);
+            Item item = itemService.findById(itemStatistic.getItemId());
+            itemStatisticDTO.setItemName(item.getName());
+            itemStatisticDTO.setItemIcon(item.getIcon());
+            itemStatisticDTO.setItemLevel(item.getLevel());
+            itemStatisticDTOs.add(itemStatisticDTO);
+        }
+        return itemStatisticDTOs;
     }
 
 }

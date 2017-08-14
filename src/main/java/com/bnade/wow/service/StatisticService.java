@@ -7,14 +7,15 @@ import com.bnade.wow.repository.ItemRepository;
 import com.bnade.wow.repository.ItemSearchStatisticRepository;
 import com.bnade.wow.repository.ItemStatisticRepository;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageRequest;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.data.domain.Pageable;
-import org.springframework.data.domain.Sort;
 import org.springframework.data.redis.core.StringRedisTemplate;
 import org.springframework.stereotype.Service;
 
+import java.sql.Timestamp;
 import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.time.Month;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.*;
@@ -107,9 +108,15 @@ public class StatisticService {
         }
     }
 
-    public List<ItemStatistic> findAllItemStatistic(Integer page, Integer size) {
-        Sort sort = new Sort(Sort.Direction.DESC, "marketPrice");
-        Pageable pageable = new PageRequest(page, size, sort);
-        return itemStatisticRepository.findAll(pageable).getContent();
+    /**
+     * 查询物品统计
+     *
+     * @param pageable
+     * @return
+     */
+    @Cacheable(cacheNames = "itemStatistics", keyGenerator="customKeyGenerator")
+    public List<ItemStatistic> findAllItemStatistic(Pageable pageable) {
+        // 只查valid_time是9999-12-31的数据
+        return itemStatisticRepository.findByValidTime(Timestamp.valueOf(LocalDateTime.of(9999, Month.DECEMBER, 31, 0, 0, 0)), pageable).getContent();
     }
 }

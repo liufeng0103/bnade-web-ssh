@@ -4,6 +4,9 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.test.context.junit4.SpringRunner;
 
 /**
@@ -35,6 +38,8 @@ public class StatisticServiceTest {
 
     @Test
     public void findAllItemStatistic() throws Exception {
-        System.out.println(statisticService.findAllItemStatistic(1, 2));
+        Sort sort = new Sort(Sort.Direction.DESC, "marketPrice");
+        Pageable pageable = new PageRequest(0, 10, sort);
+        System.out.println(statisticService.findAllItemStatistic(pageable));
     }
 }
