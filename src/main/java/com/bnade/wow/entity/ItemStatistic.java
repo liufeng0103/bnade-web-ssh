@@ -3,6 +3,7 @@ package com.bnade.wow.entity;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
+import java.io.Serializable;
 import java.sql.Timestamp;
 import java.time.LocalDateTime;
 
@@ -11,7 +12,7 @@ import java.time.LocalDateTime;
  * Created by liufeng0103@163.com on 2017/7/12.
  */
 @Entity
-public class ItemStatistic {
+public class ItemStatistic implements Serializable {
 
     @Id
     @GeneratedValue
