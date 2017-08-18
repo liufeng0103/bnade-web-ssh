@@ -121,4 +121,16 @@ public class ItemController {
         return itemStatisticDTOs;
     }
 
+    /**
+     * 查询某个物品的统计历史
+     *
+     * @param id
+     * @param bonusList
+     * @return
+     */
+    @GetMapping("/{id}/statistics")
+    public List<ItemStatistic> findStatisticsByItem(@PathVariable("id") Integer id, @RequestParam(value = "bonusList", defaultValue = "") String bonusList) {
+        return statisticService.findItemStatisticsByItemIdAndBonusList(id, bonusList);
+    }
+
 }

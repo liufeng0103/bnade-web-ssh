@@ -7,6 +7,7 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.repository.PagingAndSortingRepository;
 
 import java.sql.Timestamp;
+import java.util.List;
 
 /**
  * 物品统计
@@ -16,5 +17,7 @@ import java.sql.Timestamp;
 public interface ItemStatisticRepository extends PagingAndSortingRepository<ItemStatistic, Integer>,JpaRepository<ItemStatistic, Integer> {
 
     Page<ItemStatistic> findByValidTime(Timestamp timestamp, Pageable pageable);
+
+    List<ItemStatistic> findByItemIdAndBonusListAndValidTimeNot(Integer id, String bonusList, Timestamp timestamp);
 
 }

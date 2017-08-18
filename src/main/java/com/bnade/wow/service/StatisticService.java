@@ -27,6 +27,8 @@ import java.util.concurrent.*;
 @Service
 public class StatisticService {
 
+    private static final Timestamp VALID_TIMESTAMP = Timestamp.valueOf(LocalDateTime.of(9999, Month.DECEMBER, 31, 0, 0, 0));
+
     @Autowired
     private StringRedisTemplate stringRedisTemplate;
     @Autowired
@@ -117,6 +119,18 @@ public class StatisticService {
     @Cacheable(cacheNames = "itemStatistics", keyGenerator="customKeyGenerator")
     public List<ItemStatistic> findAllItemStatistic(Pageable pageable) {
         // 只查valid_time是9999-12-31的数据
-        return itemStatisticRepository.findByValidTime(Timestamp.valueOf(LocalDateTime.of(9999, Month.DECEMBER, 31, 0, 0, 0)), pageable).getContent();
+        return itemStatisticRepository.findByValidTime(VALID_TIMESTAMP, pageable).getContent();
     }
+
+    /**
+     * 查询某个物品的统计历史
+     *
+     * @param id
+     * @param bonusList
+     * @return
+     */
+    public List<ItemStatistic> findItemStatisticsByItemIdAndBonusList(Integer id, String bonusList) {
+        return itemStatisticRepository.findByItemIdAndBonusListAndValidTimeNot(id, bonusList, VALID_TIMESTAMP);
+    }
+
 }
