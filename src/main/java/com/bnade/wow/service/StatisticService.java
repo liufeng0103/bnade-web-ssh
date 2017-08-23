@@ -59,6 +59,25 @@ public class StatisticService {
     }
 
     /**
+     * 获取一周内的物品搜索统计
+     *
+     * @return 统计结果列表
+     */
+    public List<ItemSearchStatisticDTO> findWeeklyItemSearchStatisticsByType(Integer page, Integer size) {
+        List<ItemSearchStatisticDTO> itemSearchStatisticDTOList = new ArrayList<>(size);
+        // 每周
+        LocalDate localDate = LocalDate.now().plusDays(-7);
+        List<Object[]> result = itemSearchStatisticRepository.findStartFrom(localDate.toString(), page * size, size);
+        for (Object[] itemSearchStatistic : result) {
+            int itemId = ((Number)itemSearchStatistic[0]).intValue();
+            int searchCount = ((Number)itemSearchStatistic[1]).intValue();
+            Item item = itemRepository.findOne(itemId);
+            itemSearchStatisticDTOList.add(new ItemSearchStatisticDTO(itemId, item.getName(), searchCount, ItemSearchStatisticDTO.WEEKLY));
+        }
+        return itemSearchStatisticDTOList;
+    }
+
+    /**
      * 异步获取每日，每周，每月的统计数据
      * @return 统计列表包含每日，每周，每月的统计数据
      */

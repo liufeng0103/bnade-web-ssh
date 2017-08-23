@@ -84,13 +84,20 @@ public class ItemController {
 
     /**
      * 搜索统计
-     * 目前只实现返回每日，每周，每月搜索最多的10个物品
      *
      * @return List<ItemSearchStatisticDTO> 统计列表
      */
     @GetMapping("/search-statistics")
-    public List<ItemSearchStatisticDTO> findSearchStatistics() {
-        return statisticService.findItemSearchStatistics();
+    public List<ItemSearchStatisticDTO> findSearchStatistics(@RequestParam(value = "type", defaultValue = "0") Integer type,
+                                                             @RequestParam(value = "page", defaultValue = "0") Integer page) {
+        // 获取一周内的搜索排行
+        if (ItemSearchStatisticDTO.WEEKLY == type) {
+            int size = 50;
+            return statisticService.findWeeklyItemSearchStatisticsByType(page, size);
+        } else {
+            // 目前只实现返回每日，每周，每月搜索最多的10个物品
+            return statisticService.findItemSearchStatistics();
+        }
     }
 
     /**
