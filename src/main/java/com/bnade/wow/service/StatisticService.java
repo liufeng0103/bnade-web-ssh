@@ -72,7 +72,7 @@ public class StatisticService {
             int itemId = ((Number)itemSearchStatistic[0]).intValue();
             int searchCount = ((Number)itemSearchStatistic[1]).intValue();
             Item item = itemRepository.findOne(itemId);
-            itemSearchStatisticDTOList.add(new ItemSearchStatisticDTO(itemId, item.getName(), searchCount, ItemSearchStatisticDTO.WEEKLY));
+            itemSearchStatisticDTOList.add(new ItemSearchStatisticDTO(itemId, item.getName(), item.getIcon(), searchCount, ItemSearchStatisticDTO.WEEKLY));
         }
         return itemSearchStatisticDTOList;
     }
@@ -122,7 +122,7 @@ public class StatisticService {
                 int itemId = ((Number)itemSearchStatistic[0]).intValue();
                 int searchCount = ((Number)itemSearchStatistic[1]).intValue();
                 Item item = itemRepository.findOne(itemId);
-                itemSearchStatisticDTOList.add(new ItemSearchStatisticDTO(itemId, item.getName(), searchCount, type));
+                itemSearchStatisticDTOList.add(new ItemSearchStatisticDTO(itemId, item.getName(), item.getIcon(), searchCount, type));
             }
         } catch (InterruptedException | ExecutionException | TimeoutException e) {
             e.printStackTrace();
