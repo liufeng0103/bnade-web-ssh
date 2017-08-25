@@ -63,6 +63,7 @@ public class StatisticService {
      *
      * @return 统计结果列表
      */
+    @Cacheable(cacheNames = "itemSearchStatistics", keyGenerator="customKeyGenerator")
     public List<ItemSearchStatisticDTO> findWeeklyItemSearchStatisticsByType(Integer page, Integer size) {
         List<ItemSearchStatisticDTO> itemSearchStatisticDTOList = new ArrayList<>(size);
         // 每周
