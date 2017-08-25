@@ -1,10 +1,12 @@
 package com.bnade.wow.dto;
 
+import java.io.Serializable;
+
 /**
  * 物品搜索统计
  * Created by liufeng0103@163.com on 2017/7/12.
  */
-public class ItemSearchStatisticDTO {
+public class ItemSearchStatisticDTO implements Serializable {
     
     public static final int DAILY = 1;
     public static final int WEEKLY = 2;
