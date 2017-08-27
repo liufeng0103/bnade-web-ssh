@@ -1,15 +1,18 @@
 package com.bnade.wow.dto;
 
+import java.io.Serializable;
+
 /**
  * Created by liufeng0103@163.com on 2017/8/12.
  */
-public class ItemStatisticDTO {
+public class ItemStatisticDTO implements Serializable {
     private Integer itemId;
     private String itemName;
     private String itemIcon;
     private Integer itemLevel;
     private String bonusList;
     private Long marketPrice;
+    private Long cheapestPrice;
     private Integer quantity;
     private Integer realmQuantity;
 
@@ -61,6 +64,14 @@ public class ItemStatisticDTO {
         this.marketPrice = marketPrice;
     }
 
+    public Long getCheapestPrice() {
+        return cheapestPrice;
+    }
+
+    public void setCheapestPrice(Long cheapestPrice) {
+        this.cheapestPrice = cheapestPrice;
+    }
+
     public Integer getQuantity() {
         return quantity;
     }
@@ -86,6 +97,7 @@ public class ItemStatisticDTO {
                 ", itemLevel=" + itemLevel +
                 ", bonusList='" + bonusList + '\'' +
                 ", marketPrice=" + marketPrice +
+                ", cheapestPrice=" + cheapestPrice +
                 ", quantity=" + quantity +
                 ", realmQuantity=" + realmQuantity +
                 '}';

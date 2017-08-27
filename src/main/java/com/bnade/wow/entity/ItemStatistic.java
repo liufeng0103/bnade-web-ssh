@@ -22,6 +22,7 @@ public class ItemStatistic implements Serializable {
     private Integer petSpeciesId;
     private Integer petBreedId;
     private Long marketPrice;
+    private Long cheapestPrice;
     private Integer realmQuantity;
     private Integer validRealmQuantity;
     private Integer quantity;
@@ -75,6 +76,14 @@ public class ItemStatistic implements Serializable {
         this.marketPrice = marketPrice;
     }
 
+    public Long getCheapestPrice() {
+        return cheapestPrice;
+    }
+
+    public void setCheapestPrice(Long cheapestPrice) {
+        this.cheapestPrice = cheapestPrice;
+    }
+
     public Integer getRealmQuantity() {
         return realmQuantity;
     }
@@ -116,6 +125,7 @@ public class ItemStatistic implements Serializable {
                 ", petSpeciesId=" + petSpeciesId +
                 ", petBreedId=" + petBreedId +
                 ", marketPrice=" + marketPrice +
+                ", cheapestPrice=" + cheapestPrice +
                 ", realmQuantity=" + realmQuantity +
                 ", validRealmQuantity=" + validRealmQuantity +
                 ", quantity=" + quantity +

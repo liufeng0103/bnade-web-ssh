@@ -6,14 +6,12 @@ import com.bnade.wow.entity.Item;
 import com.bnade.wow.entity.ItemStatistic;
 import com.bnade.wow.service.ItemService;
 import com.bnade.wow.service.StatisticService;
-import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.web.PageableDefault;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -114,18 +112,7 @@ public class ItemController {
         if (pageable.getPageSize() > maxSize) {
             throw new IllegalArgumentException("超过最大返回数据量：" + maxSize);
         }
-        List<ItemStatistic> itemStatistics = statisticService.findAllItemStatistic(pageable);
-        List<ItemStatisticDTO> itemStatisticDTOs = new ArrayList<>(itemStatistics.size());
-        for (ItemStatistic itemStatistic : itemStatistics) {
-            ItemStatisticDTO itemStatisticDTO = new ItemStatisticDTO();
-            BeanUtils.copyProperties(itemStatistic, itemStatisticDTO);
-            Item item = itemService.findById(itemStatistic.getItemId());
-            itemStatisticDTO.setItemName(item.getName());
-            itemStatisticDTO.setItemIcon(item.getIcon());
-            itemStatisticDTO.setItemLevel(item.getLevel());
-            itemStatisticDTOs.add(itemStatisticDTO);
-        }
-        return itemStatisticDTOs;
+        return statisticService.findAllItemStatistic(pageable);
     }
 
     /**

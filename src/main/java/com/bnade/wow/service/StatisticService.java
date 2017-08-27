@@ -1,11 +1,13 @@
 package com.bnade.wow.service;
 
 import com.bnade.wow.dto.ItemSearchStatisticDTO;
+import com.bnade.wow.dto.ItemStatisticDTO;
 import com.bnade.wow.entity.Item;
 import com.bnade.wow.entity.ItemStatistic;
 import com.bnade.wow.repository.ItemRepository;
 import com.bnade.wow.repository.ItemSearchStatisticRepository;
 import com.bnade.wow.repository.ItemStatisticRepository;
+import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cache.annotation.Cacheable;
 import org.springframework.data.domain.Pageable;
@@ -137,9 +139,20 @@ public class StatisticService {
      * @return
      */
     @Cacheable(cacheNames = "itemStatistics", keyGenerator="customKeyGenerator")
-    public List<ItemStatistic> findAllItemStatistic(Pageable pageable) {
+    public List<ItemStatisticDTO> findAllItemStatistic(Pageable pageable) {
         // 只查valid_time是9999-12-31的数据
-        return itemStatisticRepository.findByValidTime(VALID_TIMESTAMP, pageable).getContent();
+        List<ItemStatistic> itemStatistics = itemStatisticRepository.findByValidTime(VALID_TIMESTAMP, pageable).getContent();
+        List<ItemStatisticDTO> itemStatisticDTOs = new ArrayList<>(itemStatistics.size());
+        for (ItemStatistic itemStatistic : itemStatistics) {
+            ItemStatisticDTO itemStatisticDTO = new ItemStatisticDTO();
+            BeanUtils.copyProperties(itemStatistic, itemStatisticDTO);
+            Item item = itemRepository.findOne(itemStatistic.getItemId());
+            itemStatisticDTO.setItemName(item.getName());
+            itemStatisticDTO.setItemIcon(item.getIcon());
+            itemStatisticDTO.setItemLevel(item.getLevel());
+            itemStatisticDTOs.add(itemStatisticDTO);
+        }
+        return itemStatisticDTOs;
     }
 
     /**
