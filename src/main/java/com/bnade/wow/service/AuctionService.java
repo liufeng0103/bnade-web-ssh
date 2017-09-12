@@ -1,8 +1,10 @@
 package com.bnade.wow.service;
 
+import com.bnade.wow.dto.TopOwnerDTO;
 import com.bnade.wow.entity.Auction;
 import com.bnade.wow.repository.AuctionRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
 
@@ -10,6 +12,7 @@ import javax.persistence.criteria.CriteriaBuilder;
 import javax.persistence.criteria.CriteriaQuery;
 import javax.persistence.criteria.Predicate;
 import javax.persistence.criteria.Root;
+import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -64,6 +67,27 @@ public class AuctionService {
             criteriaQuery.where(list.toArray(new Predicate[list.size()]));
             return null;
         });
+    }
+
+    @Cacheable(cacheNames = "topOwners", keyGenerator="customKeyGenerator")
+    public List<TopOwnerDTO> getTopOwnerByRealmId(int realmId) {
+        int limit = 100;
+        List<TopOwnerDTO> topOwners = new ArrayList<>(limit * 3);
+        List<Object[]> list = auctionRepository.getOwnerTopQuantities(realmId, limit);
+        updateTopOwnerList(list, topOwners, TopOwnerDTO.QUANTITY);
+        updateTopOwnerList(auctionRepository.getOwnerTopSepcies(realmId, limit), topOwners, TopOwnerDTO.SPECIES);
+        updateTopOwnerList(auctionRepository.getOwnerTopWorths(realmId, limit), topOwners, TopOwnerDTO.WORTH);
+        return topOwners;
+    }
+
+    private void updateTopOwnerList(List<Object[]> owners, List<TopOwnerDTO> topOwners, int type) {
+        for (Object[] ownerArr : owners) {
+            TopOwnerDTO topOwnerDTO = new TopOwnerDTO();
+            topOwnerDTO.setOwner((String) ownerArr[0]);
+            topOwnerDTO.setValue(ownerArr[1]);
+            topOwnerDTO.setType(type);
+            topOwners.add(topOwnerDTO);
+        }
     }
 
 }

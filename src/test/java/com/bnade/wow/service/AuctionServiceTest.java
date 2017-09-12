@@ -54,4 +54,9 @@ public class AuctionServiceTest {
         mappingJacksonValue.setFilters(filters);
         System.out.println(mappingJacksonValue.getValue());
     }
+
+    @Test
+    public void getTopOwnerByRealmId() throws Exception {
+        System.out.println(auctionService.getTopOwnerByRealmId(1));
+    }
 }

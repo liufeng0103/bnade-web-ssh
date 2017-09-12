@@ -1,6 +1,7 @@
 package com.bnade.wow.controller;
 
 import com.bnade.wow.dto.AuctionDTO;
+import com.bnade.wow.dto.TopOwnerDTO;
 import com.bnade.wow.entity.Auction;
 import com.bnade.wow.entity.Item;
 import com.bnade.wow.entity.Pet;
@@ -11,6 +12,7 @@ import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import javax.validation.Valid;
@@ -75,6 +77,14 @@ public class AuctionController {
             auctionDTOList.add(auctionDTO);
         }
         return auctionDTOList;
+    }
+
+    @GetMapping("/top-owners")
+    public List<TopOwnerDTO> getTopOwnerByRealmId(@RequestParam(value = "realmId")Integer realmId) {
+        if (realmId == null) {
+            throw new IllegalArgumentException("服务器id不能为空");
+        }
+        return auctionService.getTopOwnerByRealmId(realmId);
     }
 
 }
