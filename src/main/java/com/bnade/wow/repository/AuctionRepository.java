@@ -31,7 +31,7 @@ public interface AuctionRepository extends JpaRepository<Auction, Integer>, JpaS
      * @param limit 返回条数
      * @return
      */
-    @Query(value = "select owner,count(owner) from auction where realm_id=?1 group by owner,item_id order by count(owner) desc LIMIT 0,?2", nativeQuery = true)
+    @Query(value = "select owner,count(distinct item_id) from auction where realm_id=?1 group by owner order by count(distinct item_id) desc LIMIT 0,?2", nativeQuery = true)
     List<Object[]> getOwnerTopSepcies(int realmId, int limit);
 
     /**
