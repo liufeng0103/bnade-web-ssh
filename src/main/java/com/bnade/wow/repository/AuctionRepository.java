@@ -21,7 +21,7 @@ public interface AuctionRepository extends JpaRepository<Auction, Integer>, JpaS
      * @param limit 返回条数
      * @return
      */
-    @Query(value = "select a.owner,sum(i.market_price*a.quantity) from auction a join item_statistic i on a.item_id=i.item_id and a.bonus_list=i.bonus_list where a.realm_id=?1 group by a.owner order by sum(i.market_price*a.quantity) desc LIMIT 0,?2", nativeQuery = true)
+    @Query(value = "select a.owner,sum(i.market_price*a.quantity) from auction a join item_statistic i on a.item_id=i.item_id and a.bonus_list=i.bonus_list and i.valid_time='9999-12-31 00:00:00' where a.realm_id=?1 group by a.owner order by sum(i.market_price*a.quantity) desc LIMIT 0,?2", nativeQuery = true)
     List<Object[]> getOwnerTopWorths(int realmId, int limit);
 
     /**
