@@ -13,7 +13,7 @@ import java.util.List;
  * Created by liufeng0103@163.com on 2017/6/27.
  */
 @Entity
-@JsonIgnoreProperties(ignoreUnknown = true, value = {"icon", "itemClass", "itemSubClass", "inventoryType", "hot"})
+@JsonIgnoreProperties(ignoreUnknown = true, value = {"itemClass", "itemSubClass", "inventoryType", "hot"})
 //@JsonInclude(JsonInclude.Include.NON_NULL) json中属性为null时不生成该字段
 public class Item implements Serializable {
 
