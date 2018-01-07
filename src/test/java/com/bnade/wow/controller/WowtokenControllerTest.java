@@ -19,7 +19,7 @@ import static org.junit.Assert.*;
 @RunWith(SpringRunner.class)
 @SpringBootTest
 @AutoConfigureMockMvc
-public class WowTokenControllerTest {
+public class WowtokenControllerTest {
 
     @Autowired
     private MockMvc mvc;

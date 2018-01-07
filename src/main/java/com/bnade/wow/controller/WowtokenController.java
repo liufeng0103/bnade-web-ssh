@@ -1,7 +1,7 @@
 package com.bnade.wow.controller;
 
-import com.bnade.wow.entity.WowToken;
-import com.bnade.wow.repository.WowTokenRepository;
+import com.bnade.wow.entity.Wowtoken;
+import com.bnade.wow.repository.WowtokenRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -14,17 +14,17 @@ import java.util.List;
  */
 @RestController
 @RequestMapping("/wowtokens")
-public class WowTokenController {
+public class WowtokenController {
 
     @Autowired
-    private WowTokenRepository wowTokenRepository;
+    private WowtokenRepository wowtokenRepository;
 
     /**
      * 获取所有的时光徽章历史记录
      * @return 时光徽章列表
      */
     @RequestMapping
-    public List<WowToken> findAll() {
-        return wowTokenRepository.findAll();
+    public List<Wowtoken> findAll() {
+        return wowtokenRepository.findAll();
     }
 }

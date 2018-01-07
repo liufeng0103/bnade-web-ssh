@@ -11,14 +11,14 @@ import org.springframework.test.context.junit4.SpringRunner;
  */
 @RunWith(SpringRunner.class)
 @SpringBootTest
-public class WowTokenRepositoryTest {
+public class WowtokenRepositoryTest {
 
     @Autowired
-    private WowTokenRepository wowTokenRepository;
+    private WowtokenRepository wowtokenRepository;
 
     @Test
     public void findALlTest() {
-        System.out.println(wowTokenRepository.findAll());
+        System.out.println(wowtokenRepository.findAll());
     }
 
 }

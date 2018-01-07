@@ -8,7 +8,7 @@ import javax.persistence.Id;
  * Created by liufeng0103@163.com on 2017/6/6.
  */
 @Entity
-public class WowToken {
+public class Wowtoken {
     @Id
     private Long updated;
 
