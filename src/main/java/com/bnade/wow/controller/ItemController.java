@@ -1,18 +1,24 @@
 package com.bnade.wow.controller;
 
+import java.util.List;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
+import org.springframework.data.web.PageableDefault;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.RestController;
+
+import com.bnade.wow.dto.ItemDTO;
 import com.bnade.wow.dto.ItemSearchStatisticDTO;
 import com.bnade.wow.dto.ItemStatisticDTO;
 import com.bnade.wow.entity.Item;
 import com.bnade.wow.entity.ItemStatistic;
 import com.bnade.wow.service.ItemService;
 import com.bnade.wow.service.StatisticService;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.domain.Pageable;
-import org.springframework.data.domain.Sort;
-import org.springframework.data.web.PageableDefault;
-import org.springframework.web.bind.annotation.*;
-
-import java.util.List;
 
 /**
  * 物品查询controller
@@ -36,7 +42,7 @@ public class ItemController {
      * @return 物品列表
      */
     @GetMapping
-    public List<Item> findByName(@RequestParam("name") String name) {
+    public List<ItemDTO> findByName(@RequestParam("name") String name) {
         return itemService.findByName(name);
     }
 
