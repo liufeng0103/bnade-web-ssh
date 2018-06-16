@@ -1,23 +1,29 @@
 package com.bnade.wow.service;
 
-import com.bnade.wow.entity.Item;
-import com.bnade.wow.repository.ItemBonusRepository;
-import com.bnade.wow.repository.ItemRepository;
-import com.bnade.wow.repository.ItemSearchStatisticRepository;
-import com.bnade.wow.utils.HttpUtils;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.cache.annotation.Cacheable;
-import org.springframework.data.redis.core.StringRedisTemplate;
-import org.springframework.stereotype.Service;
-
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.net.SocketTimeoutException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.TimeUnit;
+
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.beans.BeanUtils;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.cache.annotation.Cacheable;
+import org.springframework.data.redis.core.StringRedisTemplate;
+import org.springframework.stereotype.Service;
+
+import com.bnade.wow.dto.ItemDTO;
+import com.bnade.wow.entity.Item;
+import com.bnade.wow.entity.Pet;
+import com.bnade.wow.repository.ItemBonusRepository;
+import com.bnade.wow.repository.ItemRepository;
+import com.bnade.wow.repository.ItemSearchStatisticRepository;
+import com.bnade.wow.repository.PetRepository;
+import com.bnade.wow.repository.PetStatsRepository;
+import com.bnade.wow.utils.HttpUtils;
 
 /**
  * 物品service
@@ -30,6 +36,10 @@ public class ItemService {
 
     @Autowired
     private ItemRepository itemRepository;
+    @Autowired
+    private PetRepository petRepository;
+    @Autowired
+    private PetStatsRepository petStatsRepository;
     @Autowired
     private ItemBonusRepository itemBonusRepository;
     @Autowired
@@ -52,17 +62,34 @@ public class ItemService {
     }
 
     /**
-     * 通过物品名查询物品
+     * 通过物品名查询物品和宠物
      * @param name 物品名
      * @return 物品列表
      */
-    public List<Item> findByName(String name) {
+    public List<ItemDTO> findByName(String name) {
+        List<ItemDTO> itemDTOs = new ArrayList<>();
         List<Item> items = itemRepository.findByName(name);
         for (Item item : items) {
             // TODO 不是所有物品都有bonus list，这里可以优化
-            item.setBonusLists(itemBonusRepository.findBonusListsByItemId(item.getId()));
+        	ItemDTO itemDTO = new ItemDTO();
+        	BeanUtils.copyProperties(item, itemDTO);
+        	itemDTO.setBonusLists(itemBonusRepository.findBonusListsByItemId(item.getId()));
+        	itemDTOs.add(itemDTO);
         }
-        return items;
+        if (items.size() == 0) {
+        	List<Pet> pets = petRepository.findByName(name);
+        	for (Pet pet : pets) {
+        		ItemDTO itemDTO = new ItemDTO();
+        		itemDTO.setId(Item.PET_CAGE_ID);
+        		itemDTO.setName(pet.getName());
+        		itemDTO.setIcon(pet.getIcon());
+        		itemDTO.setLevel(25);
+        		itemDTO.setPetSpeciesId(pet.getId());
+        		itemDTO.setPetStatsList(petStatsRepository.findBySpeciesId(pet.getId()));
+        		itemDTOs.add(itemDTO);
+        	}
+        }
+        return itemDTOs;
     }
 
     /**
